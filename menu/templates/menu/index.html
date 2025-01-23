@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+</head>
+<body>
+    {% block content %}
+    <table>
+        <caption>
+            Menu
+        </caption>
+
+        <thead>
+            <th>Sabor</th>
+            <th>Preço</th>
+            <th>Descrição</th>
+        </thead>
+        
+        <tbody>
+            {% for produto in dataset %}
+                <tr>
+                    <td>
+                        {{ produto.nome }}
+                    </td>
+                    <td>
+                        {{ produto.preco }}
+                    </td>
+                    <td>
+                        {{ produto.descricao }}
+                    </td>
+                </tr>                
+            {% endfor %}    
+        </tbody>    
+    </table>   
+    {% endblock content %}
+</body>
+</html>
