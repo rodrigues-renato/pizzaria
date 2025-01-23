@@ -1,9 +1,7 @@
 from django.contrib import admin
-from menu.models import Cardapio
+from menu.models import Produto
 
-# Register your models here.
-
-@admin.register(Cardapio)
-class CardapioAdmin(admin.ModelAdmin):
+@admin.register(Produto)
+class ProdutoAdmin(admin.ModelAdmin):
     list_display = 'id', 'preco'
     ordering = '-id',

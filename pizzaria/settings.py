@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'menu',
+    'clientes',
+    'funcionarios',
+    'pedidos',
+    'relatorios',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +84,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Custom user
+AUTH_USER_MODEL = 'clientes.CustomUser'
 
 
 # Password validation
