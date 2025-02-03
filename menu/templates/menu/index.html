@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-</head>
-<body>
-    {% block content %}
+{% extends "base.html" %}
+{% load static %}
+    {% block title %}Menu{% endblock title %}
+
+    {% block body %}
+    
     <table>
         <caption>
             Menu
@@ -34,6 +31,4 @@
             {% endfor %}    
         </tbody>    
     </table>   
-    {% endblock content %}
-</body>
-</html>
+    {% endblock body %}
