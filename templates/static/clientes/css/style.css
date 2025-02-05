@@ -139,3 +139,57 @@ body, html {
     background: rgba(0, 0, 255, 0.3);
     border: 1px solid rgba(0, 0, 255, 0.3);
   }
+
+  .login-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-form h2 {
+    color: #D32F2F;
+    margin-bottom: 20px;
+}
+
+.login-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.login-form .forgot-password {
+    display: block;
+    margin-bottom: 20px;
+    color: #666;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.login-form button {
+    background-color: #D32F2F;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-form button:hover {
+    background-color: #B71C1C;
+}
+
+.login-form .create-account {
+    display: block;
+    margin-top: 10px;
+    color: #D32F2F;
+    text-decoration: none;
+    font-size: 14px;
+}

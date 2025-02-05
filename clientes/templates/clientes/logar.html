@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Entrar
+{% endblock title %}
+
+{% block bg %}
+<div class="background"></div>
+
+<style>
+    .background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: url("{% static 'clientes/img/pizza.jpg' %}") no-repeat center center/cover;
+        filter: blur(10px);
+        z-index: -1;
+    }
+</style>
+{% endblock bg %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <p>Você está logado como {{ user.username }}</p>
+
+    {% else %}
+        <div class="login-container">
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    <h2>Olá! Digite seu e-mail</h2>
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}" placeholder="Digite seu e-mail">E-mail</label>
+                        {{ form.username }}
+                        {{ form.username.errors }}
+                        
+                        <label for="{{ form.password.id_for_label }} placeholder="Digite sua senha"">Senha</label>
+                        {{ form.password }}
+                        {{ form.password.errors }}
+                    </div>
+                        <a href="#" class="forgot-password">Esqueci minha senha</a>
+                        <button type="submit" class="submit-btn">Entrar</button>
+                        <a href={% url "clientes:registrar_cliente" %} class="create-account">Criar conta</a>
+                    </form>
+        </div>
+    {% endif %}
+{% endblock content %}
