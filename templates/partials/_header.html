@@ -1,0 +1,15 @@
+<header>
+    <div class="logo">🍕</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href={% url "menu:index" %}>Cardápio</a>
+        <a href={% url "clientes:login_cliente" %}>Login</a>
+    </nav>
+{% if request.resolver_match.view_name == "menu:index" %}
+    <div class="cart">
+        <a href="{% url 'menu:carrinho_detalhado' carrinho.id %}">🛒</a>
+        <span>1</span>
+    </div>
+{% endif %}
+
+</header>

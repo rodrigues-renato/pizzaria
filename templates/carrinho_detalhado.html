@@ -1,0 +1,25 @@
+<div class="menu">
+    {% for item in item_carrinho %}
+        <div class="menu-item">
+            <div class="menu-details">
+                <a href="{% url 'menu:remover_do_carrinho' item.produto.id %}">
+                    <span class="badge text-bg-danger">-</span>
+                </a>
+                {{ item.quantidade }}
+                <a href="{% url 'menu:adicionar_ao_carrinho' item.produto.id %}" class="btn btn-success btn-sm">
+                    <span class="badge text-bg-success">+</span>
+                </a>
+                {{ item.produto.nome }}
+                
+                <a href="{% url 'menu:excluir_do_carrinho' item.produto.id %}" class="btn btn-danger">
+                    Remover
+                </a>
+                
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="d-flex justify-content-between align-items-center">
+    <a href="{% url '' }" class="btn btn-success ms-auto">Confirmar pedido</a>
+    <span class="ms-auto">Subtotal: {{ subtotal }}</span>
+</div>

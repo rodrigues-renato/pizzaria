@@ -3,5 +3,5 @@ from menu.models import Produto
 
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
-    list_display = 'id', 'preco'
+    list_display = 'id', 'nome', 'preco'
     ordering = '-id',

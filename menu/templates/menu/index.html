@@ -1,34 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
-    {% block title %}Menu{% endblock title %}
-
-    {% block body %}
+    {% block title %}Cardápio{% endblock title %}
     
-    <table>
-        <caption>
-            Menu
-        </caption>
-
-        <thead>
-            <th>Sabor</th>
-            <th>Preço</th>
-            <th>Descrição</th>
-        </thead>
-        
-        <tbody>
-            {% for produto in dataset %}
-                <tr>
-                    <td>
-                        {{ produto.nome }}
-                    </td>
-                    <td>
-                        {{ produto.preco }}
-                    </td>
-                    <td>
-                        {{ produto.descricao }}
-                    </td>
-                </tr>                
-            {% endfor %}    
-        </tbody>    
-    </table>   
-    {% endblock body %}
+    {% block content %}
+    <h1>Cardápio</h1>
+    <div class="menu">
+        {% for produto in produtos %}
+            <div class="menu-item">
+                    {% comment %} <img src="{{ produto.image_url }}" alt="{{ produto.nome }}"> {% endcomment %}
+                <div class="menu-details">
+                    <h2>{{ produto.nome }}</h2>
+                    <p>{{ produto.descricao }}</p>
+                </div>
+                <div class="menu-price">
+                    <span>{{ produto.preco }}</span>
+                    <a href="{% url 'menu:adicionar_ao_carrinho' produto.id %}" class="btn btn-primary">+</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+{% endblock content %}

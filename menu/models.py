@@ -11,3 +11,6 @@ class Produto(models.Model):
     preco = models.DecimalField(max_digits=8, decimal_places=2)
     descricao = models.TextField()
     categoria = models.CharField(max_length=50, choices=[("Pizza", "Pizza"), ("Bebida", "Bebida")])
+
+    def __str__(self):
+        return self.nome
