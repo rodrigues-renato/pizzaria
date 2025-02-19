@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+    {% block title %}Finalizar pedido{% endblock title %}
+
+{% block content %}
+    <h2>Meu pedido</h2>
+    {% include "carrinho_detalhado.html" %}
+    <h3>Forma de pagamento</h3>
+    
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <label for="metodo_pagamento">Método de pagamento:</label>
+            <select name="metodo_pagamento" id="metodo_pagamento">
+                <option value="debito">Débito</option>
+                <option value="credito">Crédito</option>
+                <option value="pix">Pix</option>
+                <option value="dinheiro">Dinheiro</option>
+            </select>
+            <br>
+            <input type="radio" name="retirada_ou_entrega" value="entrega" id="entrega">
+            <label for="entrega">Entrega</label>
+            <input type="radio" name="retirada_ou_entrega" value="retirada" id="retirada">
+            <label for="retirada">Retirada</label>
+
+            <div id="form-endereco" style="display: none; margin-top: 10px;">
+                <h3>Endereço</h3>
+                <table>
+                    <tr>
+                        <td><label for="rua">Rua</label></td>
+                        <td><input type="text" id="rua" value="{{ rua }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="bairro">Bairro</label></td>
+                        <td><input type="text" id="bairro" value="{{ bairro }}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="numero">Numero</label></td>
+                        <td><input type="text" id="numero" value="{{ numero }}"></td>
+                    </tr>
+                </table>
+                
+            </div>
+            <br>
+            <button type="submit"> FINALIZAR PEDIDO</button>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                const radioEntrega = document.getElementById('entrega');
+                const formEndereco = document.getElementById('form-endereco');
+        
+                if (radioEntrega && formEndereco) {
+                    radioEntrega.addEventListener('change', function() {
+                        formEndereco.style.display = this.checked ? 'block' : 'none';
+                    });
+            
+                    document.getElementById('retirada').addEventListener('change', function() {
+                        formEndereco.style.display = 'none';
+                    });
+                }
+                });
+            </script>
+        </form>
+        {% comment %} <button class="payment-option">💵 Dinheiro<br><small>Solicitar troco para: R$ 0,00</small></button>
+        <button class="payment-option">💳 Cartão de débito</button>
+        <button class="payment-option">💳 Cartão de crédito</button>
+        <button class="payment-option">💲 PIX</button> {% endcomment %}
+    </div>
+
+        
+{% endblock content %}

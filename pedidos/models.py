@@ -41,13 +41,5 @@ class Pedido(models.Model):
     )
     criado_em = models.DateTimeField(auto_now_add=True)
 
-    def salvar_total(self):
-        if self.carrinho:
-            self.total = self.carrinho.calcular_total()
-
-    def save(self, *args, **kwargs):
-        self.salvar_total()
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"Pedido #{self.id} - {self.cliente.username}"

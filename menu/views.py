@@ -4,6 +4,7 @@ from django.contrib import messages
 from menu.models import Produto
 from pedidos.models import ItemCarrinho, Carrinho, Pedido
 from clientes.models import CustomUser
+from utils.utils import calcula_valor_total_carrinho
 
 
 def index(request):
@@ -76,9 +77,7 @@ def excluir_do_carrinho(request, id):
 
 def carrinho_detalhado(request, id):
     item_carrinho = ItemCarrinho.objects.filter(carrinho=id)
-    subtotal = 0
-    for item in item_carrinho:
-        subtotal += item.quantidade * item.produto.preco
+    subtotal = calcula_valor_total_carrinho(item_carrinho)
    
     carrinho = Carrinho.objects.filter(id=id)
     context = {
