@@ -16,17 +16,17 @@ def finalizar_pedido(request, id):
         
         print(request.POST.get)
 
-        # pedido = Pedido.objects.create(
-        #     cliente=usuario,
-        #     carrinho=carrinho_vinculado,
-        #     total=total,
-        #     endereco_envio=f'{usuario.rua}, {usuario.numero}, {usuario.bairro}',
-        #     metodo_pagamento=metodo_pagamento,
-        # )
-        # # Terminar template para conferir status do pedido
-        # return render(request, 'pedidos/status_pedido.html', {})
+        pedido = Pedido.objects.create(
+            cliente=usuario,
+            carrinho=carrinho_vinculado,
+            total=total,
+            endereco_envio=f'{usuario.rua}, {usuario.numero}, {usuario.bairro}',
+            metodo_pagamento=metodo_pagamento,
+        )
+        # Terminar template para conferir status do pedido
+        return render(request, 'pedidos/status_pedido.html', {})
     usuario = get_object_or_404(CustomUser, username=request.user)
-    endereco = UserEndereco.objects.filter(user=usuario)
+    # endereco = UserEndereco.objects.filter(user=usuario)
     carrinho_vinculado = get_object_or_404(Carrinho, cliente=usuario)
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
     total = calcula_valor_total_carrinho(item_carrinho)
@@ -47,5 +47,5 @@ def finalizar_pedido(request, id):
 # O usuário pode escolher não se registrar, porém ele deve informar o nome
 # e o telefone. Ambos serão armazenados no banco de dados. Os outros dados
 # podem ser definidos como null=True, como não obrigatórios
-# boa garotinhoooo
+
 def ver_pedido(request, id): ...
