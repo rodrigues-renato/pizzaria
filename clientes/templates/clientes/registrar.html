@@ -27,52 +27,53 @@ Registro
         <h2><b>Registro</b></h2>
             <form method="POST">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
+                {{ user_form.non_field_errors }}
+                {{ address_form.non_field_errors }}
                 <div class="form-group">
-                    <label for="{{ form.first_name.id_for_label }}">Nome</label>
-                    {{ form.first_name }}
-                    {{ form.first_name.errors }}
+                    <label for="{{ user_form.first_name.id_for_label }}">Nome</label>
+                    {{ user_form.first_name }}
+                    {{ user_form.first_name.errors }}
                     
-                    <label for="{{ form.last_name.id_for_label }}">Sobrenome</label>
-                    {{ form.last_name }}
-                    {{ form.last_name.errors }}
+                    <label for="{{ user_form.last_name.id_for_label }}">Sobrenome</label>
+                    {{ user_form.last_name }}
+                    {{ user_form.last_name.errors }}
                     
-                    <label for="{{ form.email.id_for_label }}">E-Mail</label>
-                    {{ form.email }}
-                    {{ form.email.errors }}
+                    <label for="{{ user_form.email.id_for_label }}">E-Mail</label>
+                    {{ user_form.email }}
+                    {{ user_form.email.errors }}
                     
-                    <label for="{{ form.cpf.id_for_label }}">CPF</label>
-                    {{ form.cpf }}
-                    {{ form.cpf.errors }}
+                    <label for="{{ user_form.cpf.id_for_label }}">CPF</label>
+                    {{ user_form.cpf }}
+                    {{ user_form.cpf.errors }}
                     
-                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
-                    {{ form.telefone }}
-                    {{ form.telefone.errors }}
+                    <label for="{{ user_form.telefone.id_for_label }}">Telefone</label>
+                    {{ user_form.telefone }}
+                    {{ user_form.telefone.errors }}
                     
 
-                    <label for="{{ form.password1.id_for_label }}">Senha</label>
-                    {{ form.password1 }}
-                    {{  form.password1.errors }}
+                    <label for="{{ user_form.password1.id_for_label }}">Senha</label>
+                    {{ user_form.password1 }}
+                    {{  user_form.password1.errors }}
 
-                    <label for="{{ form.password2.id_for_label }}">Confirme a senha</label>
-                    {{ form.password2 }}
-                    {{  form.password2.errors }}
+                    <label for="{{ user_form.password2.id_for_label }}">Confirme a senha</label>
+                    {{ user_form.password2 }}
+                    {{  user_form.password2.errors }}
                 </div>
 
                 <h2><b>Endereço</b></h2>
                 
                 <div class="form-group">
-                    <label for="{{ form.rua.id_for_label }}">Rua</label>
-                    {{ form.rua }}
-                    {{ form.rua.errors }}
+                    <label for="{{ address_form.rua.id_for_label }}">Rua</label>
+                    {{ address_form.rua }}
+                    {{ address_form.rua.errors }}
                     
-                    <label for="{{ form.numero.id_for_label }}">Número</label>
-                    {{ form.numero }}
-                    {{ form.numero.errors }}
+                    <label for="{{ address_form.numero.id_for_label }}">Número</label>
+                    {{ address_form.numero }}
+                    {{ address_form.numero.errors }}
                     
-                    <label for="{{ form.bairro.id_for_label }}">Bairro</label>
-                    {{ form.bairro }}
-                    {{ form.bairro.errors }}
+                    <label for="{{ address_form.bairro.id_for_label }}">Bairro</label>
+                    {{ address_form.bairro }}
+                    {{ address_form.bairro.errors }}
                 </div>
                     <button type="submit" class="submit-btn">Cadastre-se</button>
                 

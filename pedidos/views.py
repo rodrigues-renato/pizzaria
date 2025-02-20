@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from pedidos.models import Pedido, Carrinho, ItemCarrinho
-from clientes.models import CustomUser
+from clientes.models import CustomUser, EnderecoUser
 from utils.utils import calcula_valor_total_carrinho
 from django.http import HttpResponse
 
@@ -26,7 +26,7 @@ def finalizar_pedido(request, id):
         # # Terminar template para conferir status do pedido
         # return render(request, 'pedidos/status_pedido.html', {})
     usuario = get_object_or_404(CustomUser, username=request.user)
-    endereco = UserEndereco.objects.filter(user=usuario)
+    endereco = EnderecoUser.objects.filter(user=usuario)
     carrinho_vinculado = get_object_or_404(Carrinho, cliente=usuario)
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
     total = calcula_valor_total_carrinho(item_carrinho)
@@ -34,9 +34,7 @@ def finalizar_pedido(request, id):
     context = {
         'usuario': usuario,
         'carrinho': carrinho_vinculado,
-        'rua': usuario.rua,
-        'bairro': usuario.bairro,
-        'numero': usuario.numero,
+        'endereco': endereco,
         'item_carrinho': item_carrinho,
         'subtotal': total,
     }

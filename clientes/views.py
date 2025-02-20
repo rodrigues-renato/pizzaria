@@ -3,29 +3,37 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm  
+from .forms import RegisterForm, AddressForm
 from pedidos.models import Carrinho
 from clientes.models import CustomUser
 from django.shortcuts import get_object_or_404
 
 
 def registrar_cliente(request):
-    form = RegisterForm()
+    user_form = RegisterForm()
+    address_form = AddressForm()
 
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
+        user_form = RegisterForm(request.POST)
+        address_form = AddressForm(request.POST)
+        if user_form.is_valid() and address_form.is_valid():
+            user = user_form.save()
+            address = address_form.save(commit=False)
+            address.user = user
+            address.save()
             messages.success(request, 'Usuário criado com sucesso')
 
             # Quando uma conta é registrada, um carrinho é vinculado a ela
-            custom_user = get_object_or_404(CustomUser, email=form.cleaned_data['email'])
+            custom_user = get_object_or_404(
+                CustomUser, email=user_form.cleaned_data['email']
+            )
             criar_carrinho = Carrinho.objects.create(cliente=custom_user)
             criar_carrinho.save()
 
             return redirect('clientes:registrar_cliente')
 
-    return render(request, 'clientes/registrar.html', {'form':form})
+    context = {'user_form': user_form, 'address_form': address_form}
+    return render(request, 'clientes/registrar.html', context)
 
 
 def logar_cliente(request):
@@ -39,8 +47,8 @@ def logar_cliente(request):
             login(request, user)
             messages.success(request, 'Logado com sucesso')
             return redirect('menu:index')
-        
-    return render(request, 'clientes/logar.html', {'form':form})
+
+    return render(request, 'clientes/logar.html', {'form': form})
 
 
 @login_required(login_url='clientes:login_cliente')

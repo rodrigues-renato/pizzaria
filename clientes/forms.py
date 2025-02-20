@@ -1,16 +1,16 @@
 from django import forms
-from django.contrib.auth import forms as form_user
-from .models import CustomUser
+from django.contrib.auth import forms as _forms
+from .models import CustomUser, EnderecoUser
 from django.core.exceptions import ValidationError
 
 
-class UserChangeForm(form_user.UserChangeForm):
-    class Meta(form_user.UserChangeForm.Meta):
+class UserChangeForm(_forms.UserChangeForm):
+    class Meta(_forms.UserChangeForm.Meta):
         models = CustomUser
 
 
-class UserCreationForm(form_user.UserCreationForm):
-    class Meta(form_user.UserCreationForm.Meta):
+class UserCreationForm(_forms.UserCreationForm):
+    class Meta(_forms.UserCreationForm.Meta):
         models = CustomUser
 
 
@@ -34,9 +34,6 @@ class RegisterForm(UserCreationForm):
             'last_name',
             'email',
             'cpf',
-            'rua',
-            'bairro',
-            'numero',
             'telefone',
             'password1',
             'password2',
@@ -47,7 +44,7 @@ class RegisterForm(UserCreationForm):
 
         if CustomUser.objects.filter(email=email).exists():
             self.add_error(
-                'email', ValidationError('E-mail already exists', code='invalid')
+                'email', ValidationError('E-mail já existe', code='invalid')
             )
 
         return email
@@ -59,3 +56,10 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = EnderecoUser
+        fields = ('rua', 'bairro', 'numero')
+        
