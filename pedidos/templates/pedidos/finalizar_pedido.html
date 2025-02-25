@@ -5,40 +5,52 @@
 {% block content %}
     <h2>Meu pedido</h2>
     {% include "carrinho_detalhado.html" %}
+    <p>Total: R${{ subtotal }}</p>
     <h3>Forma de pagamento</h3>
     
     <div>
         <form method="post">
             {% csrf_token %}
-            <label for="metodo_pagamento">Método de pagamento:</label>
             <select name="metodo_pagamento" id="metodo_pagamento">
+                <option value="" disabled selected>Selecione um método</option>
                 <option value="debito">Débito</option>
                 <option value="credito">Crédito</option>
                 <option value="pix">Pix</option>
                 <option value="dinheiro">Dinheiro</option>
             </select>
             <br>
+            
+            <div id="cartao" style="display: none; margin-top: 10px;">
+                <label for="cartao">Número do cartão</label>
+                <input type="number" max=20 name="cartao">
+                <br>
+                <label for="cartao">CVV</label>
+                <input type="text" max=3 name="cvv">
+            </div>
+            
+            <div id="dinheiro" style="display: none; margin-top: 10px;">
+                <label for="dinheiro">Troco para:</label>
+                <input type="number" name="dinheiro">
+            </div>
+
             <input type="radio" name="retirada_ou_entrega" value="entrega" id="entrega">
-            <label for="entrega">Entrega</label>
+            <label for="entrega">Entrega (40 min)</label>
             <input type="radio" name="retirada_ou_entrega" value="retirada" id="retirada">
-            <label for="retirada">Retirada</label>
+            <label for="retirada">Retirada (20 min)</label>
 
             <div id="form-endereco" style="display: none; margin-top: 10px;">
                 <h3>Endereço</h3>
-                <table>
-                    <tr>
-                        <td><label for="rua">Rua</label></td>
-                        <td><input type="text" id="rua" value="{{ rua }}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="bairro">Bairro</label></td>
-                        <td><input type="text" id="bairro" value="{{ bairro }}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="numero">Numero</label></td>
-                        <td><input type="text" id="numero" value="{{ numero }}"></td>
-                    </tr>
-                </table>
+                <label for="endereco">Escolha o endereço </label>
+                <select name="endereco" id="endereco">
+                    {% for endereco in enderecos %}
+                        <option value="{{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}">
+                            {{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adicionar_endereco">
+                    <b>+</b>
+                </button>
                 
             </div>
             <br>
@@ -48,24 +60,66 @@
                 document.addEventListener("DOMContentLoaded", function() {
                 const radioEntrega = document.getElementById('entrega');
                 const formEndereco = document.getElementById('form-endereco');
-        
+                
+                
                 if (radioEntrega && formEndereco) {
                     radioEntrega.addEventListener('change', function() {
                         formEndereco.style.display = this.checked ? 'block' : 'none';
                     });
-            
+                    
                     document.getElementById('retirada').addEventListener('change', function() {
                         formEndereco.style.display = 'none';
                     });
                 }
+                
+                const formPagamento = document.getElementById('metodo_pagamento')
+                const formCartao = document.getElementById('cartao');
+                const formDinheiro = document.getElementById('dinheiro');
+
+                formPagamento.addEventListener('change', function() {
+                    if (this.value === 'debito' || this.value === 'credito') {
+                        formCartao.style.display = 'block';
+                    }
+                    else{
+                        formCartao.style.display = 'none';
+                    }
+
+                    if (this.value === 'dinheiro') {
+                        formDinheiro.style.display = 'block';
+                    }
+                    else{
+                        formDinheiro.style.display = 'none';
+                    }
+                });
                 });
             </script>
+        </form>
+
+        <!-- Modal -->
+        <form method="post" action="{% url "clientes:salvar_endereco" %}">
+            {% csrf_token %}
+            <div class="modal fade" id="adicionar_endereco" tabindex="-1" aria-labelledby="add_endereco_modal" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="add_endereco_modal">Adicionar endereço</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% include "endereco_form.html" %}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
         </form>
         {% comment %} <button class="payment-option">💵 Dinheiro<br><small>Solicitar troco para: R$ 0,00</small></button>
         <button class="payment-option">💳 Cartão de débito</button>
         <button class="payment-option">💳 Cartão de crédito</button>
         <button class="payment-option">💲 PIX</button> {% endcomment %}
     </div>
-
         
 {% endblock content %}

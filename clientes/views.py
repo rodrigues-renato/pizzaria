@@ -5,8 +5,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, AddressForm
 from pedidos.models import Carrinho
-from clientes.models import CustomUser
+from clientes.models import CustomUser, EnderecoUser
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 
 def registrar_cliente(request):
@@ -56,3 +57,20 @@ def deslogar_cliente(request):
     logout(request)
     messages.success(request, 'Deslogado com sucesso')
     return redirect('clientes:login_cliente')
+
+
+def salvar_endereco(request):
+    rua = request.POST.get('rua')
+    bairro = request.POST.get('bairro')
+    numero = request.POST.get('numero')
+    count = EnderecoUser.objects.filter(user=request.user, rua=rua, bairro=bairro, numero=numero).count()
+    if count > 0:
+        messages.error(request, 'Este endereço já está cadastrado')
+    else:
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.save()
+            return redirect(request.META.get('HTTP_REFERER', 'pedidos:finalizar_pedido'))
+        return HttpResponse(form)

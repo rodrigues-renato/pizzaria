@@ -3,6 +3,11 @@
     {% block title %}Status do pedido{% endblock title %}
 
 {% block content %}
+    <h2>Detalhes do pedido:</h2>
+    {% for item in item_carrinho %}
+        {{ item.quantidade }}x {{ item.produto.nome }}
+    {% endfor %}
+
     <h2>Status</h2>
-        <p>Pedido está em preparo</p>
+    <p>Pedido {{ pedido.status }}</p>
 {% endblock content %}
