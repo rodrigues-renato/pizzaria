@@ -8,7 +8,7 @@
 {% if request.resolver_match.view_name == "menu:index" %}
     <div class="cart">
         <a href="{% url 'menu:carrinho_detalhado' carrinho.id %}">🛒</a>
-        <span>1</span>
+        <span>{{ item_carrinho }}</span>
     </div>
 {% endif %}
 

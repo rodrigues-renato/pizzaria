@@ -15,9 +15,12 @@ def index(request):
 
     usuario = get_object_or_404(CustomUser, username=request.user)
     carrinho_vinculado = get_object_or_404(Carrinho, cliente=usuario)
+    itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
+    
     context = {
         'produtos': Produto.objects.all(),
         'carrinho': carrinho_vinculado,
+        'item_carrinho': itens_carrinho,
     }
 
     return render(request, 'menu/index.html', context)
@@ -78,7 +81,8 @@ def excluir_do_carrinho(request, id):
 def carrinho_detalhado(request, id):
     item_carrinho = ItemCarrinho.objects.filter(carrinho=id)
     subtotal = calcula_valor_total_carrinho(item_carrinho)
-   
+    if item_carrinho.count() == 0:
+        return redirect('menu:index')
     carrinho = Carrinho.objects.filter(id=id)
     context = {
         'item_carrinho': item_carrinho,

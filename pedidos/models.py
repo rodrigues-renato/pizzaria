@@ -1,6 +1,7 @@
 from django.db import models
 from clientes.models import CustomUser
 from menu.models import Produto
+from django.db import transaction
 
 
 class Carrinho(models.Model):
@@ -21,7 +22,7 @@ class ItemCarrinho(models.Model):
 
 class Pedido(models.Model):
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    carrinho = models.OneToOneField(
+    carrinho = models.ForeignKey(
         Carrinho, on_delete=models.SET_NULL, null=True, blank=True
     )
     total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -41,5 +42,23 @@ class Pedido(models.Model):
     )
     criado_em = models.DateTimeField(auto_now_add=True)
 
+    def finalizar_pedido(self):
+        if self.carrinho:
+            with transaction.atomic():
+                itens_carrinho = ItemCarrinho.objects.filter(carrinho=self.carrinho)
+
+                for item in itens_carrinho:
+                    ItemPedido.objects.create(
+                        pedido=self, produto=item.produto, quantidade=item.quantidade
+                    )
+
+                itens_carrinho.delete()
+
     def __str__(self):
         return f"Pedido #{self.id} - {self.cliente.username}"
+
+
+class ItemPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name="itens")
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    quantidade = models.PositiveIntegerField()
