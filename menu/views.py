@@ -5,8 +5,9 @@ from menu.models import Produto
 from pedidos.models import ItemCarrinho, Carrinho, Pedido
 from clientes.models import CustomUser
 from utils.utils import calcula_valor_total_carrinho
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='clientes:login_cliente')
 def index(request):
     """
     Primeira tela do site.
@@ -25,7 +26,7 @@ def index(request):
 
     return render(request, 'menu/index.html', context)
 
-
+@login_required(login_url='clientes:login_cliente')
 def adicionar_ao_carrinho(request, id):
     usuario = get_object_or_404(CustomUser, username=request.user)
 
@@ -49,6 +50,7 @@ def adicionar_ao_carrinho(request, id):
     return redirect(request.META.get('HTTP_REFERER', 'menu:index'))
 
 
+@login_required(login_url='clientes:login_cliente')
 def remover_do_carrinho(request, id):
     usuario = get_object_or_404(CustomUser, username=request.user)
 
@@ -65,6 +67,7 @@ def remover_do_carrinho(request, id):
     return redirect(request.META.get('HTTP_REFERER', 'menu:index'))
 
 
+@login_required(login_url='clientes:login_cliente')
 def excluir_do_carrinho(request, id):
     usuario = get_object_or_404(CustomUser, username=request.user)
 
@@ -78,11 +81,23 @@ def excluir_do_carrinho(request, id):
     return redirect(request.META.get('HTTP_REFERER', 'menu:index'))
 
 
+@login_required(login_url='clientes:login_cliente')
 def carrinho_detalhado(request, id):
     item_carrinho = ItemCarrinho.objects.filter(carrinho=id)
-    subtotal = calcula_valor_total_carrinho(item_carrinho)
+    carrinho = Carrinho.objects.filter(cliente=request.user)
+    permite_view = True
+    if item_carrinho.first():
+        # Nao permite visualizar o carrinho de outro user
+        if item_carrinho.first().carrinho != carrinho.first():
+            permite_view = False
+    # Nao permite ver carrinho detalhado sem itens no carrinho
     if item_carrinho.count() == 0:
+        permite_view = False
+        
+    if not permite_view:
         return redirect('menu:index')
+    
+    subtotal = calcula_valor_total_carrinho(item_carrinho)
     carrinho = Carrinho.objects.filter(id=id)
     context = {
         'item_carrinho': item_carrinho,

@@ -62,6 +62,8 @@ def finalizar_pedido(request):
     enderecos = EnderecoUser.objects.filter(user=usuario).all()
     carrinho_vinculado = get_object_or_404(Carrinho, cliente=usuario)
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
+    if item_carrinho.count() == 0:
+        return redirect('menu:index')
     total = calcula_valor_total_carrinho(item_carrinho)
 
     context = {
