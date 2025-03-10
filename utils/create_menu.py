@@ -48,7 +48,7 @@ if __name__ == '__main__':
         preco = round(uniform(25.0, 70.0), 2)
         produtos.append(
             Produto(
-                nome=nome, preco=preco, descricao=" ".join(descricao), categoria="Pizza"
+                nome=nome, preco=preco, descricao=", ".join(descricao), categoria="Pizza"
             )
         )
 

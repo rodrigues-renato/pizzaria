@@ -234,30 +234,6 @@ h1 {
 
 header {
     width: 100%;
-    background-color: #ff3d3d;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: white;
-}
-header .logo {
-    font-size: 24px;
-}
-
-header nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a {
-    color: white;
-}
-
-header .cart {
-    font-size: 20px;
 }
 
 .menu {
@@ -325,3 +301,24 @@ header .cart {
     margin-top: 20px;
     cursor: pointer;
 }
+
+.pagination {
+    margin-top: var(--spacing);
+    display: flex;
+    justify-content: center;
+    padding: calc(var(--spacing) * 0.8);
+    font-size: var(--small-font-size);
+  }
+  
+  .pagination .step-links {
+    display: flex;
+    gap: calc(var(--spacing) * 0.8);
+  }
+  
+  .pagination .step-links a {
+    /* color: var(--link-dark-color); */
+    color: #c0392b;
+    transition: color var(--transition-fast) ease-in-out;
+    text-decoration: none;
+    display: block;
+  }

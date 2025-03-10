@@ -20,6 +20,10 @@ class ItemCarrinho(models.Model):
         return f"{self.quantidade}x {self.produto.nome}"
 
 
+    def get_total(self):
+        return self.produto.preco * self.quantidade
+
+
 class Pedido(models.Model):
     cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     carrinho = models.ForeignKey(

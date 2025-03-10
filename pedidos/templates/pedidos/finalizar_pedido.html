@@ -3,94 +3,94 @@
     {% block title %}Finalizar pedido{% endblock title %}
 
 {% block content %}
-    <h2>Meu pedido</h2>
+    <h2 class="display-6">Meu pedido</h2>
     {% include "carrinho_detalhado.html" %}
-    <p>Total: R${{ subtotal }}</p>
-    <h3>Forma de pagamento</h3>
-    
-    <div>
-        <form method="post">
+    <p class="fs-4 fw-bold">Total: R${{ subtotal|floatformat:2 }}</p>
+    <h3 class="mt-4">Forma de pagamento</h3>
+
+    <div class="mt-3">
+        <form method="post" class="p-4 border rounded bg-light">
             {% csrf_token %}
-            <select name="metodo_pagamento" id="metodo_pagamento">
-                <option value="" disabled selected>Selecione um método</option>
-                <option value="debito">Débito</option>
-                <option value="credito">Crédito</option>
-                <option value="pix">Pix</option>
-                <option value="dinheiro">Dinheiro</option>
-            </select>
-            <br>
-            
-            <div id="cartao" style="display: none; margin-top: 10px;">
-                <label for="cartao">Número do cartão</label>
-                <input type="number" max=20 name="cartao">
-                <br>
-                <label for="cartao">CVV</label>
-                <input type="text" max=3 name="cvv">
-            </div>
-            
-            <div id="dinheiro" style="display: none; margin-top: 10px;">
-                <label for="dinheiro">Troco para:</label>
-                <input type="number" name="dinheiro">
-            </div>
-
-            <input type="radio" name="retirada_ou_entrega" value="entrega" id="entrega">
-            <label for="entrega">Entrega (40 min)</label>
-            <input type="radio" name="retirada_ou_entrega" value="retirada" id="retirada">
-            <label for="retirada">Retirada (20 min)</label>
-
-            <div id="form-endereco" style="display: none; margin-top: 10px;">
-                <h3>Endereço</h3>
-                <label for="endereco">Escolha o endereço </label>
-                <select name="endereco" id="endereco">
-                    {% for endereco in enderecos %}
-                        <option value="{{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}">
-                            {{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}
-                        </option>
-                    {% endfor %}
+            <div class="mb-3">
+                <label for="metodo_pagamento" class="form-label">Método de Pagamento</label>
+                <select name="metodo_pagamento" id="metodo_pagamento" class="form-select">
+                    <option value="" disabled selected>Selecione um método</option>
+                    <option value="debito">Débito</option>
+                    <option value="credito">Crédito</option>
+                    <option value="pix">Pix</option>
+                    <option value="dinheiro">Dinheiro</option>
                 </select>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adicionar_endereco">
-                    <b>+</b>
-                </button>
-                
             </div>
-            <br>
-            <button type="submit"> FINALIZAR PEDIDO</button>
 
+            <div id="cartao" class="mb-3" style="display: none;">
+                <label for="cartao" class="form-label">Número do cartão</label>
+                <input type="number" max=20 name="cartao" class="form-control">
+                <label for="cvv" class="form-label mt-2">CVV</label>
+                <input type="text" max=3 name="cvv" class="form-control">
+            </div>
+
+            <div id="dinheiro" class="mb-3" style="display: none;">
+                <label for="dinheiro" class="form-label">Troco para:</label>
+                <input type="number" name="dinheiro" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <input type="radio" name="retirada_ou_entrega" value="entrega" id="entrega" class="form-check-input">
+                <label for="entrega" class="form-check-label">Entrega (40 min)</label>
+                <input type="radio" name="retirada_ou_entrega" value="retirada" id="retirada" class="form-check-input ms-3">
+                <label for="retirada" class="form-check-label">Retirada (20 min)</label>
+            </div>
+
+            <div id="form-endereco" class="mb-3" style="display: none;">
+                <h3>Endereço</h3>
+                <label for="endereco" class="form-label">Escolha o endereço</label>
+                <div class="d-flex align-items-center">
+                    <select name="endereco" id="endereco" class="form-select">
+                        {% for endereco in enderecos %}
+                            <option value="{{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}">
+                                {{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#adicionar_endereco">
+                        <b>+</b>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-100 mt-4">FINALIZAR PEDIDO</button>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                const radioEntrega = document.getElementById('entrega');
-                const formEndereco = document.getElementById('form-endereco');
-                
-                
-                if (radioEntrega && formEndereco) {
-                    radioEntrega.addEventListener('change', function() {
-                        formEndereco.style.display = this.checked ? 'block' : 'none';
-                    });
-                    
-                    document.getElementById('retirada').addEventListener('change', function() {
-                        formEndereco.style.display = 'none';
-                    });
-                }
-                
-                const formPagamento = document.getElementById('metodo_pagamento')
-                const formCartao = document.getElementById('cartao');
-                const formDinheiro = document.getElementById('dinheiro');
+                    const radioEntrega = document.getElementById('entrega');
+                    const formEndereco = document.getElementById('form-endereco');
 
-                formPagamento.addEventListener('change', function() {
-                    if (this.value === 'debito' || this.value === 'credito') {
-                        formCartao.style.display = 'block';
-                    }
-                    else{
-                        formCartao.style.display = 'none';
+                    if (radioEntrega && formEndereco) {
+                        radioEntrega.addEventListener('change', function() {
+                            formEndereco.style.display = this.checked ? 'block' : 'none';
+                        });
+
+                        document.getElementById('retirada').addEventListener('change', function() {
+                            formEndereco.style.display = 'none';
+                        });
                     }
 
-                    if (this.value === 'dinheiro') {
-                        formDinheiro.style.display = 'block';
-                    }
-                    else{
-                        formDinheiro.style.display = 'none';
-                    }
-                });
+                    const formPagamento = document.getElementById('metodo_pagamento');
+                    const formCartao = document.getElementById('cartao');
+                    const formDinheiro = document.getElementById('dinheiro');
+
+                    formPagamento.addEventListener('change', function() {
+                        if (this.value === 'debito' || this.value === 'credito') {
+                            formCartao.style.display = 'block';
+                        } else {
+                            formCartao.style.display = 'none';
+                        }
+
+                        if (this.value === 'dinheiro') {
+                            formDinheiro.style.display = 'block';
+                        } else {
+                            formDinheiro.style.display = 'none';
+                        }
+                    });
                 });
             </script>
         </form>
@@ -116,10 +116,6 @@
                 </div>
             </div>
         </form>
-        {% comment %} <button class="payment-option">💵 Dinheiro<br><small>Solicitar troco para: R$ 0,00</small></button>
-        <button class="payment-option">💳 Cartão de débito</button>
-        <button class="payment-option">💳 Cartão de crédito</button>
-        <button class="payment-option">💲 PIX</button> {% endcomment %}
     </div>
-        
+
 {% endblock content %}
