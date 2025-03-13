@@ -4,8 +4,24 @@
 
 {% block content %}
     <h2 class="display-6">Meu pedido</h2>
-    {% include "carrinho_detalhado.html" %}
-    <p class="fs-4 fw-bold">Total: R${{ subtotal|floatformat:2 }}</p>
+    {% comment %} {% include "carrinho_detalhado.html" %} {% endcomment %}
+    <div id="item-carrinho" class="menu">
+        {% for item in item_carrinho %}
+        <div id="menu-item-{{ item.produto.id }}" class="menu-item d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div class="menu-details d-flex align-items-center flex-grow-1">
+                <div class="quantity-controls d-flex align-items-center me-3">
+                    <span id="quantidade-{{ item.produto.id }}" class="quantity mx-2">{{ item.quantidade }}</span>
+                </div>
+                <span class="product-name flex-grow-1">{{ item.produto.nome }}</span>
+                <span id="total-{{ item.produto.id }}" class="product-total me-3">R$ {{ item.get_total|floatformat:2 }}</span>
+            </div>
+        </div>
+        
+        {% endfor %}
+
+    </div>
+    
+    <span id="valor-total" class="fs-4 fw-bold">Total: R$ {{ subtotal|floatformat:2|default:"0.00" }}</span>
     <h3 class="mt-4">Forma de pagamento</h3>
 
     <div class="mt-3">
