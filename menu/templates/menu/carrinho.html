@@ -1,17 +1,18 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
 {% load static %}
     {% block content %}
 
     {% if item_carrinho %}
         {% include "carrinho_detalhado.html" %}
-        <div class="d-flex justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
-            <span class="fs-4 fw-bold">Total: R${{ subtotal|floatformat:2 }}</span>
+        <div id="finalizar-pedido" class="d-flex justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
+            <span id="valor-total" class="fs-4 fw-bold">Total: R$ {{ subtotal|floatformat:2|default:"0.00" }}</span>
             <a href="{% url 'pedidos:finalizar_pedido'  %}" class="btn btn-lg btn-danger ms-3">
                 Finalizar pedido
                 <i class="fas fa-shopping-cart ms-2"></i>
             </a>
         </div>    
     {% else %}
-        O carrinho está vazio!    
+        <div id="finalizar_pedido" class="d-flex justify-content-between align-items-center mt-4 p-3 border rounded bg-light">
+            <span class="fs-4 fw-bold">O carrinho está vazio!</span>
+        </div>    
     {% endif %}
 {% endblock content %}

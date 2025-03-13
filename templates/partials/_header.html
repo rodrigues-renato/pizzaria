@@ -15,12 +15,10 @@
           <a class="nav-link active" href="{% url 'clientes:login_cliente' %}">
             <i class="fas fa-sign-in-alt me-1"></i>Login
           </a>
-          {% if request.resolver_match.view_name == "menu:index" %}
+          {% if user.is_authenticated %}
             <button class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#carrinhoOffcanvas" aria-controls="carrinhoOffcanvas">
-            {% comment %} <a class="nav-link active" href="{% url 'menu:carrinho_detalhado' carrinho.id %}"> {% endcomment %}
               <i class="fas fa-shopping-cart me-1"></i>Carrinho
-              <span class="badge bg-light text-dark rounded-pill ms-1">{{ qtd_item_carrinho }}</span>
-            </a>
+              <span id="qtd-item-carrinho" class="badge bg-light text-dark rounded-pill ms-1">{{ qtd_item_carrinho }}</span>
           </button>
           {% endif %}
         </div>
