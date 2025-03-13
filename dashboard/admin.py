@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Vendas
 
-# Register your models here.
+
+@admin.register(Vendas)
+class VendasAdmin(admin.ModelAdmin):
+    list_display = []
