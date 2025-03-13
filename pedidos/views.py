@@ -62,6 +62,10 @@ def finalizar_pedido(request):
     enderecos = EnderecoUser.objects.filter(user=usuario).all()
     carrinho_vinculado = get_object_or_404(Carrinho, cliente=usuario)
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
+    qtd_itens_carrinho = item_carrinho.count()
+    if qtd_itens_carrinho == 0:
+        return redirect('menu:index')
+    
     total = calcula_valor_total_carrinho(item_carrinho)
 
     context = {
@@ -69,6 +73,7 @@ def finalizar_pedido(request):
         'carrinho': carrinho_vinculado,
         'enderecos': enderecos,
         'item_carrinho': item_carrinho,
+        'qtd_item_carrinho': qtd_itens_carrinho,
         'subtotal': total,
         'address_form': address_form,
     }

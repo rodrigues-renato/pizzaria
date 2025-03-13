@@ -1,15 +1,28 @@
 <header>
-    <div class="logo">🍕</div>
-    <nav>
-        <a href="#">Home</a>
-        <a href={% url "menu:index" %}>Cardápio</a>
-        <a href={% url "clientes:login_cliente" %}>Login</a>
-    </nav>
-{% if request.resolver_match.view_name == "menu:index" %}
-    <div class="cart">
-        <a href="{% url 'menu:carrinho_detalhado' carrinho.id %}">🛒</a>
-        <span>{{ item_carrinho }}</span>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #ff3d3d">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'menu:index' %}">
+        <i class="fas fa-pizza-slice fa-lg me-2"></i>Pizza Express
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link active" aria-current="page" href="#">
+            <i class="fas fa-book-open me-1"></i>Cardápio
+          </a>
+          <a class="nav-link active" href="{% url 'clientes:login_cliente' %}">
+            <i class="fas fa-sign-in-alt me-1"></i>Login
+          </a>
+          {% if user.is_authenticated %}
+            <button class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#carrinhoOffcanvas" aria-controls="carrinhoOffcanvas">
+              <i class="fas fa-shopping-cart me-1"></i>Carrinho
+              <span id="qtd-item-carrinho" class="badge bg-light text-dark rounded-pill ms-1">{{ qtd_item_carrinho }}</span>
+          </button>
+          {% endif %}
+        </div>
+      </div>
     </div>
-{% endif %}
-
+  </nav>
 </header>
