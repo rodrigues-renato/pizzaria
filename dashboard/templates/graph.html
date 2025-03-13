@@ -56,8 +56,8 @@
         
         <div class="col-md">
             <br>
-            <h1>Despesas:</h1>
-            <canvas id="despesas_mensal" width="250" height="200"></canvas>
+            <h1>Vendas mensais:</h1>
+            <canvas id="quantidade_de_vendas_mensal" width="250" height="200"></canvas>
         </div>
 
     </div>
@@ -68,7 +68,13 @@
             <br>
 
             <h1>Produtos mais vendidos:</h1>
-            <canvas id="produtos_mais_vendidos" width="250" height="200"></canvas>
+            <canvas id="produtos_mais_vendidos" width="150" height="100"></canvas>
+        </div>
+        <div class="col-md">
+            <br>
+
+            <h1>Produtos mais vendidos:</h1>
+            <canvas id="produtos_mais_vendidos" width="150" height="100"> </canvas>
         </div>
         
       
@@ -104,7 +110,7 @@
     window.onload = function(e){
     renderiza_total_vendido('{% url "retorna_total_vendido" %}')
     renderiza_faturamento_mensal('{% url "relatorio_faturamento" %}')
-    renderiza_despesas_mensal()
+    renderiza_vendas_mensal()
     renderiza_produtos_mais_vendidos('{% url "relatorio_produtos" %}')
     
 

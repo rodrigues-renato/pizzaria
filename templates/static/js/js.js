@@ -67,15 +67,15 @@ function renderiza_faturamento_mensal(url){
 
 
 
-function renderiza_despesas_mensal(){
-    const ctx = document.getElementById('despesas_mensal').getContext('2d');
+function renderiza_vendas_mensal(){
+    const ctx = document.getElementById('quantidade_de_vendas_mensal').getContext('2d');
     
     const myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             datasets: [{
-                label: 'Despesas',
+                label: 'Vendas',
                 data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
                 backgroundColor: "#CB1EA8",
                 borderColor: "#888888",
@@ -106,7 +106,7 @@ function renderiza_produtos_mais_vendidos(url){
             data: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Despesas',
+                    label: 'Quantidade',
                     data: data.data,
                     backgroundColor: cores_produtos_mais_vendidos[0],
                     borderColor: cores_produtos_mais_vendidos[1],

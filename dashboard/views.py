@@ -3,7 +3,8 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import Produto, Vendas
 from datetime import datetime
-from django.db.models import Sum
+from django.db.models import Count,Sum
+
 
 def graph(request):
     return render(request, 'graph.html')
@@ -44,21 +45,23 @@ def relatorio_faturamento(request):
 
 def relatorio_produtos(request):
     produtos = Produto.objects.all()
+    print(produtos)
     label = []
     data = []
     for produto in produtos:
-        vendas = Vendas.objects.filter(nome_produto=produto).aggregate(Sum('total'))
-        if not vendas['total__sum']:
-            vendas['total__sum'] = 0
+        quantidade_vendas = Vendas.objects.filter(nome_produto=produto).aggregate(Count('id'))
+        print(quantidade_vendas)
+        if not quantidade_vendas['id__count']:
+            quantidade_vendas['id__count'] = 0
         label.append(produto.nome)
-        data.append(vendas['total__sum'])
+        data.append(quantidade_vendas['id__count'])
 
     x = list(zip(label, data))
 
     x.sort(key=lambda x: x[1], reverse=True)
     x = list(zip(*x))
-    
-    return JsonResponse({'labels': x[1][:3], 'data': x[1][:3]})
+    print(x)
+    return JsonResponse({'labels': x[0][:], 'data': x[1][:]})
 
 
 
