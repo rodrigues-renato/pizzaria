@@ -316,7 +316,6 @@ header {
   }
   
   .pagination .step-links a {
-    /* color: var(--link-dark-color); */
     color: #c0392b;
     transition: color var(--transition-fast) ease-in-out;
     text-decoration: none;

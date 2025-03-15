@@ -22,7 +22,7 @@ def registrar_cliente(request):
             address = address_form.save(commit=False)
             address.user = user
             address.save()
-            messages.success(request, 'Usuário criado com sucesso')
+            # messages.success(request, 'Usuário criado com sucesso')
 
             # Quando uma conta é registrada, um carrinho é vinculado a ela
             custom_user = get_object_or_404(
@@ -46,7 +46,7 @@ def logar_cliente(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, 'Logado com sucesso')
+            # messages.success(request, 'Logado com sucesso')
             return redirect('menu:index')
 
     return render(request, 'clientes/logar.html', {'form': form})
@@ -55,7 +55,7 @@ def logar_cliente(request):
 @login_required(login_url='clientes:login_cliente')
 def deslogar_cliente(request):
     logout(request)
-    messages.success(request, 'Deslogado com sucesso')
+    # messages.success(request, 'Deslogado com sucesso')
     return redirect('clientes:login_cliente')
 
 
