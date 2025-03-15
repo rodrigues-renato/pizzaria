@@ -12,14 +12,26 @@
           <a class="nav-link active" aria-current="page" href="#">
             <i class="fas fa-book-open me-1"></i>Cardápio
           </a>
-          <a class="nav-link active" href="{% url 'clientes:login_cliente' %}">
-            <i class="fas fa-sign-in-alt me-1"></i>Login
-          </a>
+          <div class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user me-1"></i>Usuário
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown" style="font-size: 1em;">
+              {% if user.is_authenticated %}
+                <li><a class="dropdown-item" href="#"><i class="fas fa-user-edit me-1"></i> Alterar Dados</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-history me-1"></i> Histórico de Pedidos</a></li>
+                <li><a class="dropdown-item" href="{% url 'clientes:logout_cliente' %}"><i class="fas fa-sign-out-alt me-1"></i> Sair</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="{% url 'clientes:registrar_cliente' %}"><i class="fas fa-user-plus me-1"></i> Criar Conta</a></li>
+                <li><a class="dropdown-item" href="{% url 'clientes:login_cliente' %}"><i class="fas fa-sign-in-alt me-1"></i> Login</a></li>
+              {% endif %}
+            </ul>
+          </div>
           {% if user.is_authenticated %}
             <button class="nav-link active" data-bs-toggle="offcanvas" data-bs-target="#carrinhoOffcanvas" aria-controls="carrinhoOffcanvas">
               <i class="fas fa-shopping-cart me-1"></i>Carrinho
               <span id="qtd-item-carrinho" class="badge bg-light text-dark rounded-pill ms-1">{{ qtd_item_carrinho }}</span>
-          </button>
+            </button>
           {% endif %}
         </div>
       </div>

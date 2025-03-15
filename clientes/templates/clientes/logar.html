@@ -31,11 +31,15 @@ Entrar
                     {% csrf_token %}
                     <h2>Olá! Digite seu e-mail</h2>
                     <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}" placeholder="Digite seu e-mail">E-mail</label>
+                        <label for="{{ form.username.id_for_label }}" placeholder="Digite seu e-mail">
+                            <i class="fas fa-envelope"></i> E-Mail
+                        </label>
                         {{ form.username }}
                         {{ form.username.errors }}
                         
-                        <label for="{{ form.password.id_for_label }} placeholder="Digite sua senha"">Senha</label>
+                        <label for="{{ form.password.id_for_label }}" placeholder="Digite sua senha">
+                            <i class="fas fa-lock"></i> Senha
+                        </label>
                         {{ form.password }}
                         {{ form.password.errors }}
                     </div>

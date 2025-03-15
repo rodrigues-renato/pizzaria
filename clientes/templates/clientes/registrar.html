@@ -5,8 +5,6 @@
 Registro
 {% endblock title %}
 
-
-
 {% block bg %}
 <div class="background"></div>
 
@@ -23,48 +21,58 @@ Registro
 {% endblock bg %}
 
 {% block content %}
-    <div class="form-container">
-        <h2><b>Registro</b></h2>
-            <form method="POST">
-                {% csrf_token %}
+    <div class="login-container">
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            <h2>Registro</h2>
+            <div class="form-group">
                 {{ user_form.non_field_errors }}
                 {{ address_form.non_field_errors }}
-                <div class="form-group">
-                    <label for="{{ user_form.first_name.id_for_label }}">Nome</label>
-                    {{ user_form.first_name }}
-                    {{ user_form.first_name.errors }}
-                    
-                    <label for="{{ user_form.last_name.id_for_label }}">Sobrenome</label>
-                    {{ user_form.last_name }}
-                    {{ user_form.last_name.errors }}
-                    
-                    <label for="{{ user_form.email.id_for_label }}">E-Mail</label>
-                    {{ user_form.email }}
-                    {{ user_form.email.errors }}
-                    
-                    <label for="{{ user_form.cpf.id_for_label }}">CPF</label>
-                    {{ user_form.cpf }}
-                    {{ user_form.cpf.errors }}
-                    
-                    <label for="{{ user_form.telefone.id_for_label }}">Telefone</label>
-                    {{ user_form.telefone }}
-                    {{ user_form.telefone.errors }}
-                    
 
-                    <label for="{{ user_form.password1.id_for_label }}">Senha</label>
-                    {{ user_form.password1 }}
-                    {{  user_form.password1.errors }}
+                <label for="{{ user_form.first_name.id_for_label }}">
+                    <i class="fas fa-user"></i> Nome
+                </label>
+                {{ user_form.first_name }}
+                {{ user_form.first_name.errors }}
 
-                    <label for="{{ user_form.password2.id_for_label }}">Confirme a senha</label>
-                    {{ user_form.password2 }}
-                    {{  user_form.password2.errors }}
-                </div>
+                <label for="{{ user_form.last_name.id_for_label }}">
+                    <i class="fas fa-user"></i> Sobrenome
+                </label>
+                {{ user_form.last_name }}
+                {{ user_form.last_name.errors }}
 
-                <h2><b>Endereço</b></h2>
-                
-                {% include "endereco_form.html" %}
-                <button type="submit" class="submit-btn">Cadastre-se</button>
-                
-                </form>
-    </div>    
+                <label for="{{ user_form.email.id_for_label }}">
+                    <i class="fas fa-envelope"></i> E-Mail
+                </label>
+                {{ user_form.email }}
+                {{ user_form.email.errors }}
+
+                <label for="{{ user_form.cpf.id_for_label }}">
+                    <i class="fas fa-id-card"></i> CPF
+                </label>
+                {{ user_form.cpf }}
+                {{ user_form.cpf.errors }}
+
+                <label for="{{ user_form.telefone.id_for_label }}">
+                    <i class="fas fa-phone"></i> Telefone
+                </label>
+                {{ user_form.telefone }}
+                {{ user_form.telefone.errors }}
+
+                <label for="{{ user_form.password1.id_for_label }}">
+                    <i class="fas fa-lock"></i> Senha
+                </label>
+                {{ user_form.password1 }}
+                {{ user_form.password1.errors }}
+
+                <label for="{{ user_form.password2.id_for_label }}">
+                    <i class="fas fa-lock"></i> Confirme a senha
+                </label>
+                {{ user_form.password2 }}
+                {{ user_form.password2.errors }}
+            </div>
+            <button type="submit" class="submit-btn">Cadastre-se</button>
+        </form>
+    </div>
+</div>
 {% endblock content %}
