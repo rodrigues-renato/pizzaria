@@ -61,10 +61,18 @@ def buscar(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
+    subtotal = calcula_valor_total_carrinho(item_carrinho)
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
+    
     context = {
         'page_obj': page_obj,
         'carrinho': carrinho_vinculado,
         'qtd_item_carrinho': qtd_itens_carrinho,
+        'item_carrinho': item_carrinho,
+        'produtos': produtos,
+        'subtotal': subtotal,
+        'query': query,
     }
 
     return render(request, 'menu/index.html', context)
