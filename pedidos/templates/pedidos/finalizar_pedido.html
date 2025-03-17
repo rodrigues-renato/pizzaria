@@ -4,25 +4,29 @@
 
 {% block content %}
 <div id="finalizar-pedido-total">
-    <h2 class="display-6">Meu pedido</h2>
-    {% comment %} {% include "carrinho_detalhado.html" %} {% endcomment %}
-    <div id="item-carrinho-pedido" class="menu">
+    <h2 class="display-6 mb-4">Meu pedido</h2>
+    <div id="item-carrinho-pedido" class="card mb-4 shadow-sm">
+        {% comment %} <div class="card-header text-white" style="background-color: #ff3d3d">
+            <h5 class="mb-0">
+                <i class="fas fa-shopping-cart me-2"></i>Itens do pedido
+            </h5>
+        </div> {% endcomment %}
+        <div class="card-body">
         {% for item in item_carrinho %}
-        <div id="menu-item-{{ item.produto.id }}-pedido" class="menu-item d-flex justify-content-between align-items-center py-2 border-bottom">
-            <div class="menu-details d-flex align-items-center flex-grow-1">
-                <div class="quantity-controls d-flex align-items-center me-3">
-                    <span id="quantidade-{{ item.produto.id }}-pedido" class="quantity mx-2">{{ item.quantidade }}</span>
+        <div id="menu-item-{{ item.produto.id }}-pedido" class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div class="d-flex align-items-center">
+                    <span id="quantidade-{{ item.produto.id }}-pedido" class="badge bg-secondary me-3">{{ item.quantidade }}</span>
+                    <span class="fs-5">{{ item.produto.nome }}</span>
                 </div>
-                <span class="product-name flex-grow-1">{{ item.produto.nome }}</span>
-                <span id="total-{{ item.produto.id }}-pedido" class="product-total me-3">R$ {{ item.get_total|floatformat:2 }}</span>
+                <span id="total-{{ item.produto.id }}-pedido" class="fs-5 fw-bold">R$ {{ item.get_total|floatformat:2 }}</span>
             </div>
-        </div>
         
         {% endfor %}
-
+    <div class="mt-3 text-end">
+        <span id="valor-total-pedido" class="fs-4 fw-bold text-success">Total: R$ {{ subtotal|floatformat:2|default:"0.00" }}</span>
     </div>
-    
-    <span id="valor-total-pedido" class="fs-4 fw-bold">Total: R$ {{ subtotal|floatformat:2|default:"0.00" }}</span>
+</div>
+</div>
     <h3 class="mt-4">Forma de pagamento</h3>
 
     <div class="mt-3">

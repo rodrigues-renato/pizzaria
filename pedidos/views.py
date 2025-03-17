@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from pedidos.models import Pedido, Carrinho, ItemCarrinho
+from pedidos.models import Pedido, Carrinho, ItemCarrinho, ItemPedido
 from clientes.models import CustomUser, EnderecoUser
 from utils.utils import calcula_valor_total_carrinho
 from django.http import HttpResponse
 from clientes.forms import AddressForm
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 def finalizar_pedido(request):
@@ -65,7 +66,7 @@ def finalizar_pedido(request):
     qtd_itens_carrinho = item_carrinho.count()
     if qtd_itens_carrinho == 0:
         return redirect('menu:index')
-    
+
     total = calcula_valor_total_carrinho(item_carrinho)
 
     context = {
@@ -84,4 +85,16 @@ def finalizar_pedido(request):
 # O usuário pode escolher não se registrar, porém ele deve informar o nome
 # e o telefone. Ambos serão armazenados no banco de dados. Os outros dados
 # podem ser definidos como null=True, como não obrigatórios
-def ver_pedido(request, id): ...
+def historico_de_pedidos(request):
+    usuario = get_object_or_404(CustomUser, username=request.user)
+    pedidos = Pedido.objects.filter(cliente=usuario).all().order_by('-criado_em')
+    paginator = Paginator(pedidos, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    itens_pedidos = ItemPedido.objects.filter(cliente=usuario).all()
+    context = {
+        'itens_pedidos': itens_pedidos,
+        'page_obj': page_obj,
+    }
+    return render(request, 'pedidos/historico.html', context)

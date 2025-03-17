@@ -19,7 +19,6 @@ class ItemCarrinho(models.Model):
     def __str__(self):
         return f"{self.quantidade}x {self.produto.nome}"
 
-
     def get_total(self):
         return self.produto.preco * self.quantidade
 
@@ -53,7 +52,10 @@ class Pedido(models.Model):
 
                 for item in itens_carrinho:
                     ItemPedido.objects.create(
-                        pedido=self, produto=item.produto, quantidade=item.quantidade
+                        pedido=self,
+                        produto=item.produto,
+                        quantidade=item.quantidade,
+                        cliente=self.cliente,
                     )
 
                 itens_carrinho.delete()
@@ -63,6 +65,10 @@ class Pedido(models.Model):
 
 
 class ItemPedido(models.Model):
+    cliente = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name="itens")
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.PositiveIntegerField()
+
+    def get_total(self):
+        return self.produto.preco * self.quantidade
