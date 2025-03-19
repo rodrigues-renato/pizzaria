@@ -22,7 +22,7 @@ function createMenuItem(productId, data) {
         </div>
         <div class="remove-action">
             <a href="/menu/excluir_do_carrinho/${productId}/" class="btn btn-outline-danger btn-ajax">
-                <i class="fas fa-trash-alt me-1"></i> Remover
+                <i class="fas fa-trash"></i>
             </a>
         </div>
     </div>
