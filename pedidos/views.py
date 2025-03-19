@@ -21,12 +21,12 @@ def finalizar_pedido(request):
         pedido_esta_correto = True
         # Itens para retirada ficarão como R no banco de dados
         endereco = 'R'
-
         tempo_de_espera = '20 minutos'
+        msg_status_pedido = f'Venha retirar seu pedido em {tempo_de_espera}!'
         if entrega == 'entrega':
             endereco = request.POST.get('endereco')
             tempo_de_espera = '40 minutos'
-
+            msg_status_pedido = f'Seu pedido será entregue em {tempo_de_espera}!'
         if not entrega:
             pedido_esta_correto = False
 
@@ -53,7 +53,8 @@ def finalizar_pedido(request):
             context = {
                 'item_carrinho': item_carrinho,
                 'pedido': pedido,
-                'tempo_de_espera': tempo_de_espera,
+                'status_pedido': msg_status_pedido,
+                'subtotal': total,
             }
             return render(request, 'pedidos/status_pedido.html', context)
         else:

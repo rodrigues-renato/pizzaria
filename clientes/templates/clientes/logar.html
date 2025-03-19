@@ -32,13 +32,13 @@ Entrar
                     <h2>Olá! Digite seu e-mail</h2>
                     <div class="form-group">
                         <label for="{{ form.username.id_for_label }}" placeholder="Digite seu e-mail">
-                            <i class="fas fa-envelope"></i> E-Mail
+                            <i class="fas fa-envelope"></i> {{ form.username.label }}
                         </label>
                         {{ form.username }}
                         {{ form.username.errors }}
                         
                         <label for="{{ form.password.id_for_label }}" placeholder="Digite sua senha">
-                            <i class="fas fa-lock"></i> Senha
+                            <i class="fas fa-lock"></i> {{ form.password.label }}
                         </label>
                         {{ form.password }}
                         {{ form.password.errors }}

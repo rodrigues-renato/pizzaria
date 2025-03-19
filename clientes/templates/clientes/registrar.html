@@ -30,48 +30,48 @@ Registro
                 {{ address_form.non_field_errors }}
 
                 <label for="{{ user_form.first_name.id_for_label }}">
-                    <i class="fas fa-user"></i> Nome
+                    <i class="fas fa-user"></i> {{ user_form.first_name.label }}
                 </label>
                 {{ user_form.first_name }}
                 {{ user_form.first_name.errors }}
 
                 <label for="{{ user_form.last_name.id_for_label }}">
-                    <i class="fas fa-user"></i> Sobrenome
+                    <i class="fas fa-user"></i> {{ user_form.last_name.label }}
                 </label>
                 {{ user_form.last_name }}
                 {{ user_form.last_name.errors }}
 
                 <label for="{{ user_form.email.id_for_label }}">
-                    <i class="fas fa-envelope"></i> E-Mail
+                    <i class="fas fa-envelope"></i> {{ user_form.email.label }}
                 </label>
                 {{ user_form.email }}
                 {{ user_form.email.errors }}
 
                 <label for="{{ user_form.cpf.id_for_label }}">
-                    <i class="fas fa-id-card"></i> CPF
+                    <i class="fas fa-id-card"></i> {{ user_form.cpf.label }}
                 </label>
                 {{ user_form.cpf }}
                 {{ user_form.cpf.errors }}
 
                 <label for="{{ user_form.telefone.id_for_label }}">
-                    <i class="fas fa-phone"></i> Telefone
+                    <i class="fas fa-phone"></i> {{ user_form.telefone.label }}
                 </label>
                 {{ user_form.telefone }}
                 {{ user_form.telefone.errors }}
 
                 <label for="{{ user_form.password1.id_for_label }}">
-                    <i class="fas fa-lock"></i> Senha
+                    <i class="fas fa-lock"></i> {{ user_form.password1.label }}
                 </label>
                 {{ user_form.password1 }}
                 {{ user_form.password1.errors }}
 
                 <label for="{{ user_form.password2.id_for_label }}">
-                    <i class="fas fa-lock"></i> Confirme a senha
+                    <i class="fas fa-lock"></i> {{ user_form.password2.label }}
                 </label>
                 {{ user_form.password2 }}
                 {{ user_form.password2.errors }}
             </div>
-            <button type="submit" class="submit-btn">Cadastre-se</button>
+            <button type="submit" class="submit-btn mt-5">Cadastre-se</button>
         </form>
     </div>
 </div>

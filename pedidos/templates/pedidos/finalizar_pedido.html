@@ -6,11 +6,6 @@
 <div id="finalizar-pedido-total">
     <h2 class="display-6 mb-4">Meu pedido</h2>
     <div id="item-carrinho-pedido" class="card mb-4 shadow-sm">
-        {% comment %} <div class="card-header text-white" style="background-color: #ff3d3d">
-            <h5 class="mb-0">
-                <i class="fas fa-shopping-cart me-2"></i>Itens do pedido
-            </h5>
-        </div> {% endcomment %}
         <div class="card-body">
         {% for item in item_carrinho %}
         <div id="menu-item-{{ item.produto.id }}-pedido" class="d-flex justify-content-between align-items-center py-2 border-bottom">
@@ -27,14 +22,13 @@
     </div>
 </div>
 </div>
-    <h3 class="mt-4">Forma de pagamento</h3>
 
     <div class="mt-3">
         <form method="post" class="p-4 border rounded bg-light">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="metodo_pagamento" class="form-label">Método de Pagamento</label>
-                <select name="metodo_pagamento" id="metodo_pagamento" class="form-select">
+                <select name="metodo_pagamento" id="metodo_pagamento" class="form-select form-select-lg mb-3">
                     <option value="" disabled selected>Selecione um método</option>
                     <option value="debito">Débito</option>
                     <option value="credito">Crédito</option>
@@ -45,7 +39,7 @@
 
             <div id="cartao" class="mb-3" style="display: none;">
                 <label for="cartao" class="form-label">Número do cartão</label>
-                <input type="number" max=20 name="cartao" class="form-control">
+                <input type="text" max=20 name="cartao" class="form-control">
                 <label for="cvv" class="form-label mt-2">CVV</label>
                 <input type="text" max=3 name="cvv" class="form-control">
             </div>
@@ -63,10 +57,9 @@
             </div>
 
             <div id="form-endereco" class="mb-3" style="display: none;">
-                <h3>Endereço</h3>
                 <label for="endereco" class="form-label">Escolha o endereço</label>
                 <div class="d-flex align-items-center">
-                    <select name="endereco" id="endereco" class="form-select">
+                    <select name="endereco" id="endereco" class="form-select form-select-lg">
                         {% for endereco in enderecos %}
                             <option value="{{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}">
                                 {{ endereco.rua }}, {{ endereco.numero }}, {{ endereco.bairro }}
@@ -131,8 +124,8 @@
                         {% include "endereco_form.html" %}
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-success">Salvar</button>
                     </div>
                 </div>
                 </div>
