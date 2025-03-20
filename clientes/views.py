@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
-# from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, AddressForm, AuthenticationForm
+from .forms import RegisterForm, AddressForm
 from pedidos.models import Carrinho
 from clientes.models import CustomUser, EnderecoUser
 from django.shortcuts import get_object_or_404
@@ -12,7 +12,6 @@ from django.http import HttpResponse
 
 def registrar_cliente(request):
     user_form = RegisterForm()
-    address_form = AddressForm()
 
     if request.method == 'POST':
         user_form = RegisterForm(request.POST)
@@ -27,9 +26,9 @@ def registrar_cliente(request):
             criar_carrinho = Carrinho.objects.create(cliente=custom_user)
             criar_carrinho.save()
 
-            return redirect('clientes:registrar_cliente')
+            return redirect('clientes:login_cliente')
 
-    context = {'user_form': user_form, 'address_form': address_form}
+    context = {'user_form': user_form}
     return render(request, 'clientes/registrar.html', context)
 
 
@@ -44,7 +43,7 @@ def logar_cliente(request):
             login(request, user)
             # messages.success(request, 'Logado com sucesso')
             return redirect('menu:index')
-        else: print('form invalido')
+
     return render(request, 'clientes/logar.html', {'form': form})
 
 

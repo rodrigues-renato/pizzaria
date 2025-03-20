@@ -132,6 +132,7 @@ class RegisterForm(UserCreationForm):
             self.add_error(
                 'first_name', ValidationError('Nome é obrigatório.', code='invalid')
             )
+        return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name')
@@ -139,6 +140,7 @@ class RegisterForm(UserCreationForm):
             self.add_error(
                 'last_name', ValidationError('Sobrenome é obrigatório.', code='invalid')
             )
+        return last_name
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
