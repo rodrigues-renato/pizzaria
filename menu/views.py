@@ -3,7 +3,7 @@ from django.contrib import messages
 from menu.models import Produto
 from pedidos.models import ItemCarrinho, Carrinho, Pedido
 from clientes.models import CustomUser
-from utils.utils import calcula_valor_total_carrinho
+from utils.functions import calcula_valor_total_carrinho
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from pedidos.models import Pedido, Carrinho, ItemCarrinho, ItemPedido
 from clientes.models import CustomUser, EnderecoUser
-from utils.utils import calcula_valor_total_carrinho
+from utils.functions import calcula_valor_total_carrinho
 from django.http import HttpResponse
 from clientes.forms import AddressForm
 from django.contrib import messages
