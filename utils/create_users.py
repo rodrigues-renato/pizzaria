@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
         usuarios.append(
             CustomUser(
-                username=email,
+                username=cpf,
                 first_name=first_name,
                 last_name=last_name,
                 telefone=telefone,
@@ -41,7 +41,7 @@ if __name__ == '__main__':
                 cpf=cpf,
             )
         )
-        carrinho.append(Carrinho(cliente=email))
+        carrinho.append(Carrinho(cliente=usuarios[-1]))
 
     if len(usuarios) > 0:
         CustomUser.objects.bulk_create(usuarios)

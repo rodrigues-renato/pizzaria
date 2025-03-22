@@ -17,13 +17,12 @@ settings.USE_TZ = False
 django.setup()
 
 if __name__ == '__main__':
-    import faker
-
+    
     from menu.models import Produto
 
     Produto.objects.all().delete()
     produtos = []
-    fake = faker.Faker('pt_BR')
+    
     ingredientes_base = [
         "mussarela",
         "calabresa",

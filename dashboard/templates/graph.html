@@ -15,7 +15,7 @@
 {% block body %}
 <div class="container">
     <br>
-    <div class="row">
+    {% comment %} <div class="row">
 
         <div  class="col-md informacoes_basicas">
             
@@ -42,7 +42,7 @@
               </svg> <h1></h1> 
         </div>
        
-    </div>
+    </div> {% endcomment %}
 
 
     <div class="row">
@@ -108,9 +108,9 @@
 
 <script>
     window.onload = function(e){
-    renderiza_total_vendido('{% url "retorna_total_vendido" %}')
+    
     renderiza_faturamento_mensal('{% url "relatorio_faturamento" %}')
-    renderiza_vendas_mensal()
+    renderiza_vendas_mensal('{% url "relatorio_vendas" %}')
     renderiza_produtos_mais_vendidos('{% url "relatorio_produtos" %}')
     
 
