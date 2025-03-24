@@ -85,11 +85,11 @@ function renderiza_vendas_mensal(url){
                     label: 'Vendas',
                     data: data.data,
                     backgroundColor: "#CB1EA8",
-                    borderColor: "#888888",
+                    borderColor: "black",
                     borderWidth: 2,
                     pointBackgroundColor: "#CB1EA8",
-                    pointBorderColor: "#FFFFFF",
-                    pointRadius: 4,
+                    pointBorderColor: "white",
+                    pointRadius: 5,
                     fill: false,
                     tension: 0.4 // Adiciona suavização à linha
                 }]
@@ -128,4 +128,36 @@ function renderiza_produtos_mais_vendidos(url){
 
     })
   
+}
+
+
+function renderiza_clientes_mensal(url){
+    fetch(url, {
+        method: 'get',
+    }).then(function(result){
+        return result.json()
+    }).then(function(data){
+        const ctx = document.getElementById('clientes_mensal').getContext('2d');
+        
+        
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                datasets: [{
+                    label: 'Clientes',
+                    data: data.data,
+                    backgroundColor: "#00008b",
+                    borderColor: "black",
+                    borderWidth: 2,
+                    pointBackgroundColor: "#00008b",
+                    pointBorderColor: "white",
+                    pointRadius: 5,
+                    fill: false,
+                    tension: 0.4 // Adiciona suavização à linha
+                }]
+            },
+            
+        });
+    })
 }

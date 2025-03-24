@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
         usuarios.append(
             CustomUser(
-                username=cpf,
+                username=email,
                 first_name=first_name,
                 last_name=last_name,
                 telefone=telefone,

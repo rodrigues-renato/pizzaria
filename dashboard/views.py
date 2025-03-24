@@ -94,5 +94,37 @@ def relatorio_produtos(request):
     return JsonResponse({'labels': x[0][:], 'data': x[1][:]})
 
 
+def relatorio_clientes(request):
+    x = ItemPedido.objects.all().distinct('cliente_id')
+    
+    pedidos = ItemPedido.objects.all().order_by('cliente_id', 'data')
+
+
+    pedidos_filtrados = {}
+    ano_atual = datetime.now().year
+
+    for pedido in pedidos:
+        mes_ano = (pedido.cliente_id, pedido.data.year, pedido.data.month)  # Chave única para cliente/mês
+        if mes_ano not in pedidos_filtrados:
+            pedidos_filtrados[mes_ano] = pedido  # Mantemos apenas o primeiro encontrado
+
+    # Convertendo para lista
+    pedidos_filtrados = list(pedidos_filtrados.values())
+
+    # Agora podemos calcular o total de quantidades por mês
+    meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
+    data = []
+    labels=[]
+    for m in range(1, 13):  # De 1 a 12 para os meses
+        total_quantidade = sum(p.quantidade for p in pedidos_filtrados if p.data.month == m and p.data.year == ano_atual)
+        data.append(total_quantidade)
+        labels.append(meses[m-1])
+        
+        print(data, labels)
+    data_json2 = {'data': data[::], 'labels': labels[::]}
+     
+    return JsonResponse(data_json2)
+
+
 
 
