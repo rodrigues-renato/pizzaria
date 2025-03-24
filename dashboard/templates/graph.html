@@ -15,7 +15,7 @@
 {% block body %}
 <div class="container">
     <br>
-    <div class="row">
+    {% comment %} <div class="row">
 
         <div  class="col-md informacoes_basicas">
             
@@ -42,12 +42,12 @@
               </svg> <h1></h1> 
         </div>
        
-    </div>
+    </div> {% endcomment %}
 
 
     <div class="row">
         
-        <div class="col-md">
+        <div class="col-md" >
             <br>
 
             <h1>Faturamento:</h1>
@@ -61,20 +61,20 @@
         </div>
 
     </div>
-
+    <br><br><br><br><br><br>
     <div class="row">
         
         <div class="col-md">
             <br>
 
             <h1>Produtos mais vendidos:</h1>
-            <canvas id="produtos_mais_vendidos" width="150" height="100"></canvas>
+            <canvas id="produtos_mais_vendidos" width="10" height="50"></canvas>
         </div>
         <div class="col-md">
             <br>
 
-            <h1>Produtos mais vendidos:</h1>
-            <canvas id="produtos_mais_vendidos" width="150" height="100"> </canvas>
+            <h1>Clientes mensais:</h1>
+            <canvas id="clientes_mensal" width="250" height="250"> </canvas>
         </div>
         
       
@@ -86,19 +86,7 @@
 <br>
 <footer class="container">
     <br>
-    <div class="row">
-        <div style="color: black;" class="col-md centralizar">
-          CNPJ: 00.000.000/0000-00
-        </div>
-
-        <div style="color: black;" class="col-md centralizar">
-          2021 Pythonando. Todos os direitos reservados.
-        </div>
-
-        <div style="color: black;" class="col-md centralizar">
-          email@email.com.br
-        </div>
-    </div>
+    
     <br>
 
   </footer>
@@ -108,11 +96,11 @@
 
 <script>
     window.onload = function(e){
-    renderiza_total_vendido('{% url "retorna_total_vendido" %}')
-    renderiza_faturamento_mensal('{% url "relatorio_faturamento" %}')
-    renderiza_vendas_mensal()
-    renderiza_produtos_mais_vendidos('{% url "relatorio_produtos" %}')
     
+    renderiza_faturamento_mensal('{% url "relatorio_faturamento" %}')
+    renderiza_vendas_mensal('{% url "relatorio_vendas" %}')
+    renderiza_produtos_mais_vendidos('{% url "relatorio_produtos" %}')
+    renderiza_clientes_mensal('{% url "relatorio_clientes" %}')
 
 
 }
