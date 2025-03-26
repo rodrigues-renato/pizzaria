@@ -22,27 +22,27 @@ Entrar
 
 {% block content %}
 
-    {% if user.is_authenticated %}
-    <p>Você está logado como {{ user.username }}</p>
+    <div class="login-container">
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            <h2>Olá! Digite seu e-mail</h2>
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}" placeholder="Digite seu e-mail">
+                    <i class="fas fa-envelope"></i> {{ form.username.label }}
+                </label>
+                {{ form.username }}
+                {{ form.username.errors }}
+                
+                <label for="{{ form.password.id_for_label }}" placeholder="Digite sua senha">
+                    <i class="fas fa-lock"></i> {{ form.password.label }}
+                </label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+                <a href="#" class="forgot-password">Esqueci minha senha</a>
+                <button type="submit" class="submit-btn">Entrar</button>
+                <a href={% url "clientes:registrar_cliente" %} class="create-account">Criar conta</a>
+        </form>
+    </div>
 
-    {% else %}
-        <div class="login-container">
-                <form method="POST" class="login-form">
-                    {% csrf_token %}
-                    <h2>Olá! Digite seu e-mail</h2>
-                    <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}" placeholder="Digite seu e-mail">E-mail</label>
-                        {{ form.username }}
-                        {{ form.username.errors }}
-                        
-                        <label for="{{ form.password.id_for_label }} placeholder="Digite sua senha"">Senha</label>
-                        {{ form.password }}
-                        {{ form.password.errors }}
-                    </div>
-                        <a href="#" class="forgot-password">Esqueci minha senha</a>
-                        <button type="submit" class="submit-btn">Entrar</button>
-                        <a href={% url "clientes:registrar_cliente" %} class="create-account">Criar conta</a>
-                    </form>
-        </div>
-    {% endif %}
 {% endblock content %}

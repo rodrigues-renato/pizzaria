@@ -13,18 +13,16 @@ from django.contrib.auth import update_session_auth_hash
 from .models import EnderecoUser
 
 def registrar_cliente(request):
+    if request.user.is_authenticated:
+        return redirect('menu:index')
+    
     user_form = RegisterForm()
-    address_form = AddressForm()
 
     if request.method == 'POST':
         user_form = RegisterForm(request.POST)
-        address_form = AddressForm(request.POST)
-        if user_form.is_valid() and address_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save()
-            address = address_form.save(commit=False)
-            address.user = user
-            address.save()
-            messages.success(request, 'Usuário criado com sucesso')
+            # messages.success(request, 'Usuário criado com sucesso')
 
             # Quando uma conta é registrada, um carrinho é vinculado a ela
             custom_user = get_object_or_404(
@@ -33,13 +31,16 @@ def registrar_cliente(request):
             criar_carrinho = Carrinho.objects.create(cliente=custom_user)
             criar_carrinho.save()
 
-            return redirect('clientes:registrar_cliente')
+            return redirect('clientes:login_cliente')
 
-    context = {'user_form': user_form, 'address_form': address_form}
+    context = {'user_form': user_form}
     return render(request, 'clientes/registrar.html', context)
 
 
 def logar_cliente(request):
+    if request.user.is_authenticated:
+        return redirect('menu:index')
+    
     form = AuthenticationForm(request)
 
     if request.method == 'POST':
@@ -48,7 +49,7 @@ def logar_cliente(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, 'Logado com sucesso')
+            # messages.success(request, 'Logado com sucesso')
             return redirect('menu:index')
 
     return render(request, 'clientes/logar.html', {'form': form})
@@ -57,7 +58,7 @@ def logar_cliente(request):
 @login_required(login_url='clientes:login_cliente')
 def deslogar_cliente(request):
     logout(request)
-    messages.success(request, 'Deslogado com sucesso')
+    # messages.success(request, 'Deslogado com sucesso')
     return redirect('clientes:login_cliente')
 
 
