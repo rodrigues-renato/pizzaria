@@ -156,10 +156,14 @@ class RegisterForm(UserCreationForm):
         return email
 
     def clean_cpf(self):
-        cpf = self.cleaned_data.get('cpf')
+        from utils.functions import valida_cpf
 
+        cpf = self.cleaned_data.get('cpf')
+        validador = valida_cpf(cpf)
         if CustomUser.objects.filter(cpf=cpf).exists():
             self.add_error('cpf', ValidationError('CPF já cadastrado.', code='invalid'))
+        if not validador:
+            self.add_error('cpf', ValidationError('CPF inválido.', code='invalid'))
 
         return cpf
 

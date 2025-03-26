@@ -11,6 +11,9 @@ from django.http import HttpResponse
 
 
 def registrar_cliente(request):
+    if request.user.is_authenticated:
+        return redirect('menu:index')
+    
     user_form = RegisterForm()
 
     if request.method == 'POST':
@@ -33,6 +36,9 @@ def registrar_cliente(request):
 
 
 def logar_cliente(request):
+    if request.user.is_authenticated:
+        return redirect('menu:index')
+    
     form = AuthenticationForm(request)
 
     if request.method == 'POST':
