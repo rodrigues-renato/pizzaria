@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Atualizar Dados</h2>
+
+<div class = "login-container">
+<!-- Formulário para atualizar informações do usuário -->
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <h3>Atualizar Informações do Usuário</h3>
+        <div class="form-group">
+            <label for="{{ user_form.telefone.id_for_label}}" placeholder="Telefone">
+            </label>
+            {{user_form.telefone}}
+            {{user_form.telefone.errors}}
+            <button type="submit" name="update_user">Salvar Alterações</button>
+        
+    </form>
+
+    <!-- Formulário para selecionar endereço -->
+    <form method="get">
+        <h3>Selecionar Endereço</h3>
+        <select name="endereco_id" onchange="this.form.submit()">
+            <option value="">Selecione um endereço</option>
+            {% for endereco in enderecos %}
+                <option value="{{ endereco.id }}" {% if endereco.id|stringformat:"s" == endereco_selecionado %}selected{% endif %}>
+                    {{ endereco.rua }}, {{ endereco.numero }} - {{ endereco.bairro }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Formulário para atualizar endereço -->
+    {% if endereco_form %}
+    <form method="post">
+        {% csrf_token %}
+        <h3>Atualizar Endereço</h3>
+        {{ endereco_form.as_p }}
+        <button type="submit" name="update_endereco">Salvar</button>
+    </form>
+</div>
+{% endif %}
+
+<!-- Formulário para alterar senha -->
+<form method="post">
+    {% csrf_token %}
+    <h3>Alterar Senha</h3>
+    {{ password_form.as_p }}
+    <button type="submit" name="update_password">Alterar Senha</button>
+</form>
+
+{% endblock %}

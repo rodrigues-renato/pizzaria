@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import forms as _forms
 from .models import CustomUser, EnderecoUser
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 class UserChangeForm(_forms.UserChangeForm):
@@ -62,4 +63,17 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = EnderecoUser
         fields = ('rua', 'bairro', 'numero')
-        
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['telefone']
+
+class EnderecoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = EnderecoUser
+        fields = ['rua', 'bairro', 'numero']
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    class Meta:
+        model = CustomUser
