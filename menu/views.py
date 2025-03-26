@@ -16,7 +16,7 @@ def index(request):
     Primeira tela do site.
     Exibe os itens do cardápio
     """
-    produtos = Produto.objects.all()
+    produtos = Produto.objects.all().order_by('id')
     paginator = Paginator(produtos, 10)  # 10 produtos por pagina
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -28,7 +28,9 @@ def index(request):
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
     subtotal = calcula_valor_total_carrinho(item_carrinho)
 
-    qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(
+        carrinho=carrinho_vinculado
+    ).count()
 
     context = {
         'page_obj': page_obj,
@@ -46,7 +48,9 @@ def index(request):
 def buscar(request):
     usuario = get_object_or_404(CustomUser, username=request.user)
     carrinho_vinculado = get_object_or_404(Carrinho, cliente=usuario)
-    qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(
+        carrinho=carrinho_vinculado
+    ).count()
 
     query = request.GET.get("q", '').strip()
     if query == "":
@@ -63,8 +67,10 @@ def buscar(request):
 
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
     subtotal = calcula_valor_total_carrinho(item_carrinho)
-    qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
-    
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(
+        carrinho=carrinho_vinculado
+    ).count()
+
     context = {
         'page_obj': page_obj,
         'carrinho': carrinho_vinculado,
@@ -99,18 +105,22 @@ def adicionar_ao_carrinho(request, id):
 
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
     subtotal = calcula_valor_total_carrinho(item_carrinho)
-    qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(
+        carrinho=carrinho_vinculado
+    ).count()
 
     # messages.info(request, f'{produto.nome} adicionado ao carrinho')
     # return redirect(request.META.get('HTTP_REFERER', 'menu:index'))
-    print(        {
+    print(
+        {
             "status": "success",
             "message": f"{produto.nome} adicionado ao carrinho",
             "quantidade": item.quantidade,
             "total": item.get_total(),
             "produto_id": item.produto.id,
             "total_price": subtotal,
-        })
+        }
+    )
 
     return JsonResponse(
         {
@@ -124,7 +134,6 @@ def adicionar_ao_carrinho(request, id):
             "produto_nome": produto.nome,
         }
     )
-
 
 
 @login_required(login_url='clientes:login_cliente')
@@ -154,16 +163,20 @@ def remover_do_carrinho(request, id):
     # return redirect(request.META.get('HTTP_REFERER', 'menu:index'))
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
     subtotal = calcula_valor_total_carrinho(item_carrinho)
-    qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
-    
-    print(        {
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(
+        carrinho=carrinho_vinculado
+    ).count()
+
+    print(
+        {
             "status": "success",
             "message": f"{produto.nome} removido do carrinho",
             "quantidade": quantidade_atual,
             "total": consulta.get_total() if quantidade_atual > 0 else 0,
             "produto_id": produto.id,
             "total_price": subtotal,
-        })
+        }
+    )
     return JsonResponse(
         {
             "status": "success",
@@ -189,7 +202,9 @@ def excluir_do_carrinho(request, id):
     if consulta.quantidade >= 1:
         consulta.delete()
 
-    qtd_qtd_itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado).count()
+    qtd_itens_carrinho = ItemCarrinho.objects.filter(
+        carrinho=carrinho_vinculado
+    ).count()
     # messages.error(request, f'{produto.nome} excluído do carrinho')
     # return redirect(request.META.get('HTTP_REFERER', 'menu:index'))
     item_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho_vinculado)
@@ -200,35 +215,8 @@ def excluir_do_carrinho(request, id):
             "status": "success",
             "message": f"{produto.nome} excluído do carrinho",
             "quantidade": 0,
-            'qtd_item_carrinho': qtd_qtd_itens_carrinho,
+            'qtd_item_carrinho': qtd_itens_carrinho,
             "produto_id": produto.id,
             "total_price": subtotal,
         }
     )
-
-
-@login_required(login_url='clientes:login_cliente')
-def carrinho_detalhado(request, id):
-    item_carrinho = ItemCarrinho.objects.filter(carrinho=id)
-    carrinho = Carrinho.objects.filter(cliente=request.user)
-    permite_view = True
-    if item_carrinho.first():
-        # Nao permite visualizar o carrinho de outro user
-        if item_carrinho.first().carrinho != carrinho.first():
-            permite_view = False
-    # Nao permite ver carrinho detalhado sem itens no carrinho
-    if item_carrinho.count() == 0:
-        permite_view = False
-
-    if not permite_view:
-        return redirect('menu:index')
-
-    subtotal = calcula_valor_total_carrinho(item_carrinho)
-    carrinho = Carrinho.objects.filter(id=id)
-    context = {
-        'item_carrinho': item_carrinho,
-        'carrinho': carrinho,
-        'produtos': Produto.objects.all(),
-        'subtotal': subtotal,
-    }
-    return render(request, 'menu/carrinho.html', context)
