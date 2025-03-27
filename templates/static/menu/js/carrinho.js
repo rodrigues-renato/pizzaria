@@ -5,13 +5,13 @@ function createMenuItem(productId, data) {
     <div id="menu-item-${productId}-carrinho" class="menu-item d-flex justify-content-between align-items-center py-2 border-bottom">
         <div class="menu-details d-flex align-items-center flex-grow-1">
             <div class="quantity-controls d-flex align-items-center me-3">
-                <a href="/menu/remover_do_carrinho/${productId}/" class="btn btn-danger btn-sm btn-ajax">
+                <a href="/remover_do_carrinho/${productId}/" class="btn btn-danger btn-sm btn-ajax">
                     <i class="fas fa-minus"></i>
                 </a>
                 <span id="quantidade-${productId}-carrinho" class="quantity mx-2">${
     data.quantidade
   }</span>
-                <a href="/menu/adicionar_ao_carrinho/${productId}/" class="btn btn-success btn-sm btn-ajax">
+                <a href="/adicionar_ao_carrinho/${productId}/" class="btn btn-success btn-sm btn-ajax">
                     <i class="fas fa-plus"></i>
                 </a>
             </div>
@@ -21,7 +21,7 @@ function createMenuItem(productId, data) {
   ).toFixed(2)}</span>
         </div>
         <div class="remove-action">
-            <a href="/menu/excluir_do_carrinho/${productId}/" class="btn btn-outline-danger btn-ajax">
+            <a href="/excluir_do_carrinho/${productId}/" class="btn btn-outline-danger btn-ajax">
                 <i class="fas fa-trash"></i>
             </a>
         </div>

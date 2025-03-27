@@ -4,6 +4,7 @@ app_name = 'menu'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('menu/', views.index, name='index_alt'),
     path('buscar/', views.buscar, name='buscar'),
     path('adicionar_ao_carrinho/<str:id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
     path('remover_do_carrinho/<str:id>/', views.remover_do_carrinho, name='remover_do_carrinho'),
