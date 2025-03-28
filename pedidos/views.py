@@ -83,16 +83,13 @@ def finalizar_pedido(request):
     return render(request, 'pedidos/finalizar_pedido.html', context)
 
 
-# O usuário pode escolher não se registrar, porém ele deve informar o nome
-# e o telefone. Ambos serão armazenados no banco de dados. Os outros dados
-# podem ser definidos como null=True, como não obrigatórios
 def historico_de_pedidos(request):
     usuario = get_object_or_404(CustomUser, username=request.user)
     pedidos = Pedido.objects.filter(cliente=usuario).all().order_by('-criado_em')
     paginator = Paginator(pedidos, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     itens_pedidos = ItemPedido.objects.filter(cliente=usuario).all()
     context = {
         'itens_pedidos': itens_pedidos,

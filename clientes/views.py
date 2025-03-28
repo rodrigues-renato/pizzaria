@@ -7,15 +7,16 @@ from .forms import RegisterForm, AddressForm
 from pedidos.models import Carrinho
 from clientes.models import CustomUser, EnderecoUser
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import JsonResponse
 from .forms import UserUpdateForm, EnderecoUpdateForm, CustomPasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from .models import EnderecoUser
 
+
 def registrar_cliente(request):
     if request.user.is_authenticated:
         return redirect('menu:index')
-    
+
     user_form = RegisterForm()
 
     if request.method == 'POST':
@@ -40,7 +41,7 @@ def registrar_cliente(request):
 def logar_cliente(request):
     if request.user.is_authenticated:
         return redirect('menu:index')
-    
+
     form = AuthenticationForm(request)
 
     if request.method == 'POST':
@@ -66,29 +67,49 @@ def salvar_endereco(request):
     rua = request.POST.get('rua')
     bairro = request.POST.get('bairro')
     numero = request.POST.get('numero')
-    count = EnderecoUser.objects.filter(user=request.user, rua=rua, bairro=bairro, numero=numero).count()
+    count = EnderecoUser.objects.filter(
+        user=request.user, rua=rua, bairro=bairro, numero=numero
+    ).count()
     if count > 0:
-        messages.error(request, 'Este endereço já está cadastrado')
+        return JsonResponse({"error": "Este endereço já está cadastrado"}, status=400)
     else:
         form = AddressForm(request.POST)
         if form.is_valid():
-            form = form.save(commit=False)
-            form.user = request.user
-            form.save()
-            return redirect(request.META.get('HTTP_REFERER', 'pedidos:finalizar_pedido'))
-        return HttpResponse(form)
+            endereco = form.save(commit=False)
+            endereco.user = request.user
+            endereco.save()
+            # return redirect(request.META.get('HTTP_REFERER', 'pedidos:finalizar_pedido')) -> Retorno antigo
+            return JsonResponse(
+                {
+                    "id": endereco.id,  # ID do novo endereço
+                    "rua": endereco.rua,
+                    "bairro": endereco.bairro,
+                    "numero": endereco.numero,
+                }
+            )
+        return JsonResponse({"error": "Requisição inválida"}, status=400)
 
 def atualizar_dados(request):
     user = request.user
     enderecos = EnderecoUser.objects.filter(user=user)  # Obtém os endereços do usuário
 
     endereco_selecionado = request.GET.get('endereco_id')
-    endereco = enderecos.filter(id=endereco_selecionado).first() if endereco_selecionado else None
+    endereco = (
+        enderecos.filter(id=endereco_selecionado).first()
+        if endereco_selecionado
+        else None
+    )
 
     if request.method == "POST":
         user_form = UserUpdateForm(request.POST, instance=user)
-        endereco_form = EnderecoUpdateForm(request.POST, instance=endereco) if endereco else None
-        password_form = CustomPasswordChangeForm(user, request.POST) if 'update_password' in request.POST else CustomPasswordChangeForm(user)
+        endereco_form = (
+            EnderecoUpdateForm(request.POST, instance=endereco) if endereco else None
+        )
+        password_form = (
+            CustomPasswordChangeForm(user, request.POST)
+            if 'update_password' in request.POST
+            else CustomPasswordChangeForm(user)
+        )
 
         if 'update_user' in request.POST:
             if user_form.is_valid():
@@ -114,11 +135,14 @@ def atualizar_dados(request):
         endereco_form = EnderecoUpdateForm(instance=endereco) if endereco else None
         password_form = CustomPasswordChangeForm(user)
 
-    return render(request, 'clientes/atualizar_dados.html', {
-        'user_form': user_form,
-        'endereco_form': endereco_form,
-        'password_form': password_form,
-        'enderecos': enderecos,
-        'endereco_selecionado': endereco_selecionado
-    })
-
+    return render(
+        request,
+        'clientes/atualizar_dados.html',
+        {
+            'user_form': user_form,
+            'endereco_form': endereco_form,
+            'password_form': password_form,
+            'enderecos': enderecos,
+            'endereco_selecionado': endereco_selecionado,
+        },
+    )
