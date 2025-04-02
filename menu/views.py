@@ -16,8 +16,8 @@ def index(request):
     Primeira tela do site.
     Exibe os itens do cardápio
     """
-    produtos = Produto.objects.all().order_by('id')
-    paginator = Paginator(produtos, 10)  # 10 produtos por pagina
+    produtos = Produto.objects.all().order_by('-categoria')
+    paginator = Paginator(produtos, 7)  # 10 produtos por pagina
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -61,7 +61,7 @@ def buscar(request):
         | Q(descricao__icontains=str(query))
         | Q(categoria__icontains=str(query))
     ).order_by('-nome')
-    paginator = Paginator(produtos, 10)  # 10 produtos por pagina
+    paginator = Paginator(produtos, 7)  # 10 produtos por pagina
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

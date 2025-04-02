@@ -95,7 +95,24 @@ function renderiza_vendas_mensal(url){
                 }]
             },
             
+        
+            options: {
+                
+                
+                scales: {
+                    y: {
+                        // Começa a escala do zero
+                        suggestedMin: 100,   // Sugere um valor mínimo
+                        suggestedMax: 220, // Sugere um valor máximo (ajuste conforme necessário)
+                        ticks: {
+                            stepSize: 25 // Define intervalos no eixo Y
+                        }
+                    }
+                }
+            }
+        
         });
+    
     })
 }
 
@@ -109,7 +126,7 @@ function renderiza_produtos_mais_vendidos(url){
     }).then(function(data){
         
         const ctx = document.getElementById('produtos_mais_vendidos').getContext('2d');
-        var cores_produtos_mais_vendidos = gera_cor(qtd=100)
+        var cores_produtos_mais_vendidos = [[`rgba(${55}, ${55}, ${55}, ${0.2})`,`rgba(${133}, ${111}, ${255}, ${0.2})`,,(131,111,255)], (131,111,255),(131,111,255),(131,111,255),(131,111,255)]
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -158,6 +175,22 @@ function renderiza_clientes_mensal(url){
                 }]
             },
             
+        
+            options: {
+                    
+                    
+                scales: {
+                    y: {
+                        // Começa a escala do zero
+                        suggestedMin: 10,   // Sugere um valor mínimo
+                        suggestedMax: 80, // Sugere um valor máximo (ajuste conforme necessário)
+                        ticks: {
+                            stepSize: 10 // Define intervalos no eixo Y
+                        }
+                    }
+                }
+            }
+        
         });
     })
 }

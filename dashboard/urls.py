@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+app_name = 'dashboard'
+
+
 urlpatterns = [
     path('', views.graph, name="graph"),
     # path('retorna_total_vendido', views.retorna_total_vendido, name="retorna_total_vendido"),

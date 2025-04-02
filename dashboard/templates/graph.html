@@ -7,13 +7,28 @@
 
 {% block 'head' %}
 
-
+    
 
 {% endblock%}
 
+{% block bg %}
+    <div class="background"></div>
 
+    <style>
+        .background {
+            position: fixed; /* Mantém o fundo fixo na tela */
+            top: 0;
+            left: 0;
+            width: 100vw; /* 100% da largura da tela */
+            height: 100vh; /* 100% da altura da tela */
+            background-color: rgb(240, 235, 235) !important;
+            filter: blur(10px); 
+            z-index: -1;
+        }
+    </style>
+{% endblock bg %}
 {% block body %}
-<div class="container">
+<div class="container" >
     <br>
     {% comment %} <div class="row">
 
@@ -97,10 +112,10 @@
 <script>
     window.onload = function(e){
     
-    renderiza_faturamento_mensal('{% url "relatorio_faturamento" %}')
-    renderiza_vendas_mensal('{% url "relatorio_vendas" %}')
-    renderiza_produtos_mais_vendidos('{% url "relatorio_produtos" %}')
-    renderiza_clientes_mensal('{% url "relatorio_clientes" %}')
+    renderiza_faturamento_mensal('{% url "dashboard:relatorio_faturamento" %}')
+    renderiza_vendas_mensal('{% url "dashboard:relatorio_vendas" %}')
+    renderiza_produtos_mais_vendidos('{% url "dashboard:relatorio_produtos" %}')
+    renderiza_clientes_mensal('{% url "dashboard:relatorio_clientes" %}')
 
 
 }

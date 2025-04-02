@@ -1,4 +1,5 @@
 {% load static %}
+{% load static %}
 <!doctype html>
 <html lang="pt-BR">
   <head>
@@ -20,7 +21,23 @@
     <script src="{% static 'pedidos/js/entrega.js' %}"></script>
     <script src="{% static 'menu/js/carrinho.js' %}"></script>
 
-    {% block bg %}{% endblock bg %}
+    
+    {% block bg %}
+    <div class="background"></div>
+    
+    <style>
+        .background {
+            object-fit: cover; /* Garante que a imagem não distorça */
+            position: fixed; 
+            width: 100%;
+            height: 100%;
+            background: url("{% static 'clientes/img/11039274.jpg' %}") no-repeat center center/cover;
+            {% comment %} filter: blur(10px); {% endcomment %}
+            z-index: -1;
+        }
+    </style>
+    {% endblock bg %}
+    
     {% include "partials/_header.html" %}
     <main>
       {% if messages %}
@@ -32,8 +49,10 @@
       {% endif %}
       {% block content %}{% endblock content %}
       {% include "partials/_pagination.html" %}
+      
     </main>
     {% block body %}
+   
     {% endblock %}
   </body>
 </html>

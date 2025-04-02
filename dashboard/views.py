@@ -28,6 +28,7 @@ def relatorio_faturamento(request):
     cont = 0
     mes = 0
     ano = datetime.now().year
+    print(x)
     for m in range(0,12): 
         
         # if mes == 0:
@@ -47,7 +48,7 @@ def relatorio_faturamento(request):
 
 def relatorio_vendas(request):
     x = ItemPedido.objects.all()
-    
+    print(x[0], 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
     meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
     data = []
     labels = []
@@ -72,7 +73,7 @@ def relatorio_vendas(request):
 
 def relatorio_produtos(request):
     produtos = (ItemPedido.objects
-          .select_related('produto')  # Fazendo a junção com a tabela Produto
+          .select_related('menu__produto')  # Fazendo a junção com a tabela Produto
           .values('produto__categoria')  # Incluindo a categoria do produto
           .annotate(total=Count('id')))  
     print(produtos)
