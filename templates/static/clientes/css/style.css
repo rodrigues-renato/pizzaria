@@ -83,7 +83,7 @@ h1 {
   background-color: white;
   padding: 20px 40px;
   border-radius: 10px;
-  width: 300px;
+  width: 500px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   margin: 0 auto;
@@ -91,6 +91,16 @@ h1 {
   top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.update-form input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
 .form-container h2 {
@@ -361,6 +371,7 @@ header {
 .errorlist.nonfield {
   color: inherit;
 }
+
 
 
 .pagination a, .pagination span {

@@ -34,8 +34,10 @@ def finalizar_pedido(request):
             pedido_esta_correto = False
 
         if metodo_pagamento == 'dinheiro':
-            troco = float(request.POST.get('dinheiro'))
-            if troco < total:
+            troco = float(request.POST.get('dinheiro')) if request.POST.get('dinheiro') else None
+            if not troco:
+                pedido_esta_correto = False
+            elif troco and troco < total:
                 messages.error(request, f'Seu pedido custa R${total}')
                 pedido_esta_correto = False
 

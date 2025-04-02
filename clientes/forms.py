@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from django import forms
-from django.contrib.auth import authenticate, forms as _forms
+from django.contrib.auth import authenticate, forms as _forms, password_validation
 from .models import CustomUser, EnderecoUser
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import PasswordChangeForm
@@ -40,6 +40,9 @@ class AuthenticationForm(_forms.AuthenticationForm):
         ),
         required=True,
     )
+
+    class Meta:
+        fields = ("username", "password")
 
     def clean(self):
         username = self.cleaned_data.get("username")
@@ -177,21 +180,182 @@ class RegisterForm(UserCreationForm):
 
 
 class AddressForm(forms.ModelForm):
+    rua = forms.CharField(
+        label="Rua",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite sua rua',
+                'id': 'rua_input',
+                'name': 'rua',
+            }
+        ),
+        required=True,
+    )
+
+    bairro = forms.CharField(
+        label="Bairro",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite sua bairro',
+                'id': 'bairro_input',
+                'name': 'bairro',
+            }
+        ),
+        required=True,
+    )
+
+    numero = forms.CharField(
+        label="Número",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite seu numero',
+                'id': 'numero_input',
+                'name': 'numero',
+            }
+        ),
+        required=True,
+    )
     class Meta:
         model = EnderecoUser
         fields = ('rua', 'bairro', 'numero')
 
+
 class UserUpdateForm(forms.ModelForm):
+    telefone = forms.CharField(
+        label="Telefone",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'placeholder': 'Digite seu telefone'}
+        ),
+        required=True,
+    )
+
+    old_password = forms.CharField(
+        label="Senha antiga",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Digite sua senha'}
+        ),
+        required=False,
+    )
+
+    new_password1 = forms.CharField(
+        label="Nova senha",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Digite sua nova senha'}
+        ),
+        required=False,
+    )
+
+    new_password2 = forms.CharField(
+        label="Confirmação de senha",
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Confirme sua nova senha'}
+        ),
+        required=False,
+    )
+
     class Meta:
         model = CustomUser
-        fields = ['telefone']
+        fields = ('telefone',)
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+        user = super().save(commit=False)
+        password = cleaned_data.get('new_password1')
+
+        if password:
+            user.set_password(password)
+
+        if commit:
+            user.save()
+
+        return user
+
+    def clean(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+
+        if password1 or password2:
+            if password1 != password2:
+                self.add_error(
+                    'new_password2', ValidationError('Senhas não batem')
+                )
+
+        return super().clean()
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_password')
+        
+        if old_password and not self.instance.check_password(old_password):
+            self.add_error('old_password', ValidationError('Senha incorreta'))
+
+        return old_password        
+
+    def clean_new_password1(self):
+        new_password1 = self.cleaned_data.get('new_password1')
+
+        if new_password1:
+            try:
+                password_validation.validate_password(new_password1)
+            except ValidationError as errors:
+                self.add_error('new_password1', ValidationError(errors))
+
+        return new_password1
+
+    def clean_telefone(self):
+        telefone = self.cleaned_data.get('telefone')
+        current_telefone = self.instance.telefone
+        if telefone != current_telefone:
+            if CustomUser.objects.filter(telefone=telefone).exists():
+                self.add_error(
+                    'telefone', ValidationError('Telefone já cadastrado.', code='required')
+                )
+
+        return telefone
+
 
 class EnderecoUpdateForm(forms.ModelForm):
+    rua = forms.CharField(
+        label="Rua",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite sua rua',
+                'id': 'rua_input',
+                'name': 'rua',
+            }
+        ),
+        required=True,
+    )
+
+    bairro = forms.CharField(
+        label="Bairro",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite sua bairro',
+                'id': 'bairro_input',
+                'name': 'bairro',
+            }
+        ),
+        required=True,
+    )
+
+    numero = forms.CharField(
+        label="Número",
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite seu numero',
+                'id': 'numero_input',
+                'name': 'numero',
+            }
+        ),
+        required=True,
+    )
+
     class Meta:
         model = EnderecoUser
         fields = ['rua', 'bairro', 'numero']
-
-class CustomPasswordChangeForm(PasswordChangeForm):
-    class Meta:
-        model = CustomUser
-

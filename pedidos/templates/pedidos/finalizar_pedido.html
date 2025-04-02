@@ -4,7 +4,9 @@
 
 {% block content %}
 <div id="finalizar-pedido-total">
-    <h2 class="display-6 mb-4">Meu pedido</h2>
+    
+    <h2 class="display-6">Meu Pedido</h2>
+    
     <div id="item-carrinho-pedido" class="card mb-4 shadow-sm">
         <div class="card-body">
         {% for item in item_carrinho %}
@@ -67,7 +69,7 @@
                         {% endfor %}
                     </select>
                     <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#adicionar_endereco">
-                        <b>+</b>
+                        <b><i class="fas fa-plus"></i></b>
                     </button>
                 </div>
             </div>
