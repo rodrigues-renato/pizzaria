@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, AddressForm
 from pedidos.models import Carrinho
 from clientes.models import CustomUser, EnderecoUser
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from .forms import UserUpdateForm, EnderecoUpdateForm, CustomPasswordChangeForm
+from .forms import (
+    UserUpdateForm,
+    EnderecoUpdateForm,
+    AuthenticationForm,
+)
 from django.contrib.auth import update_session_auth_hash
 from .models import EnderecoUser
 
@@ -89,60 +92,57 @@ def salvar_endereco(request):
             )
         return JsonResponse({"error": "Requisição inválida"}, status=400)
 
+def excluir_endereco(request, id):
+    endereco = get_object_or_404(EnderecoUser, id=id)
+    if endereco.user == request.user:
+        endereco.delete()
+        messages.success(request, "Endereço removido com sucesso")
+        return redirect('clientes:atualizar_dados')
+    
+
+
+@login_required(login_url='clientes:login_cliente')
 def atualizar_dados(request):
     user = request.user
-    enderecos = EnderecoUser.objects.filter(user=user)  # Obtém os endereços do usuário
-
-    endereco_selecionado = request.GET.get('endereco_id')
-    endereco = (
-        enderecos.filter(id=endereco_selecionado).first()
-        if endereco_selecionado
-        else None
-    )
+    user_form = UserUpdateForm(instance=user)
+    endereco_update_form = EnderecoUpdateForm(instance=user)
+    endereco_create_form = AddressForm(instance=user)
+    enderecos = EnderecoUser.objects.filter(user=user)
+    manter_logado = AuthenticationForm(request)
 
     if request.method == "POST":
+        print(request.POST)
+        endereco_selecionado = request.POST.get('endereco_id')
+        endereco = enderecos.filter(id=endereco_selecionado).first()
+
         user_form = UserUpdateForm(request.POST, instance=user)
-        endereco_form = (
-            EnderecoUpdateForm(request.POST, instance=endereco) if endereco else None
-        )
-        password_form = (
-            CustomPasswordChangeForm(user, request.POST)
-            if 'update_password' in request.POST
-            else CustomPasswordChangeForm(user)
-        )
+        endereco_update_form = EnderecoUpdateForm(request.POST, instance=endereco)
 
-        if 'update_user' in request.POST:
-            if user_form.is_valid():
-                user_form.save()
-                messages.success(request, "Telefone atualizado com sucesso!")
-                return redirect('clientes:atualizar_dados')
+        if user_form.is_valid():
+            user_form.save()
+            user = manter_logado.get_user()
+            login(request, user)
+            messages.success(request, "Atualizado com sucesso!")
+            return redirect('clientes:atualizar_dados')
+       
+        if endereco_update_form.is_valid():
+            endereco_update_form.save()
+            messages.success(request, "Endereço atualizado com sucesso!")
+            return redirect('clientes:atualizar_dados')
 
-        elif 'update_endereco' in request.POST and endereco:
-            if endereco_form and endereco_form.is_valid():
-                endereco_form.save()
-                messages.success(request, "Endereço atualizado com sucesso!")
-                return redirect('clientes:atualizar_dados')
+        if endereco_create_form.is_valid():
+            endereco_create_form.save()
+            messages.success(request, "Novo endereço cadastrado com sucesso!")
+            return redirect('clientes:atualizar_dados')
 
-        elif 'update_password' in request.POST:
-            if password_form.is_valid():
-                user = password_form.save()
-                update_session_auth_hash(request, user)
-                messages.success(request, "Senha alterada com sucesso!")
-                return redirect('clientes:atualizar_dados')
-
-    else:
-        user_form = UserUpdateForm(instance=user)
-        endereco_form = EnderecoUpdateForm(instance=endereco) if endereco else None
-        password_form = CustomPasswordChangeForm(user)
 
     return render(
         request,
         'clientes/atualizar_dados.html',
         {
             'user_form': user_form,
-            'endereco_form': endereco_form,
-            'password_form': password_form,
+            'endereco_form': endereco_update_form,
             'enderecos': enderecos,
-            'endereco_selecionado': endereco_selecionado,
+            'address_form': endereco_create_form,
         },
     )
