@@ -2,8 +2,9 @@
 {% load static %}
 {% block title %}Atualizar Dados{% endblock title %}
 {% block content %}
+<div class="d-flex justify-content-center">
     <h2 class="display-6">Atualizar Dados</h2>
-
+</div>
 <div class = "form-container">
     <form method="post" class="update-form">
         {% csrf_token %}

@@ -19,7 +19,6 @@
             <ul class="dropdown-menu" aria-labelledby="userDropdown" style="font-size: 1em;">
               {% if user.is_authenticated %}
                 <li><a class="dropdown-item" href="{% url "clientes:atualizar_dados" %}"><i class="fas fa-user-edit me-1"></i> Alterar Dados</a></li>
-                <li><a class="dropdown-item" href="{% url 'clientes:atualizar_dados' %}"><i class="fas fa-user-edit me-1"></i> Alterar Dados</a></li>
                 <li><a class="dropdown-item" href="{% url 'pedidos:historico_de_pedidos' %}"><i class="fas fa-history me-1"></i> Histórico de Pedidos</a></li>
                 <li><a class="dropdown-item" href="{% url 'dashboard:graph' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
                 <li><a class="dropdown-item" href="{% url 'clientes:logout_cliente' %}"><i class="fas fa-sign-out-alt me-1"></i> Sair</a></li>
