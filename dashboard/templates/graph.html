@@ -99,6 +99,13 @@
             <h1>Clientes mensais distintos:</h1>
             <canvas id="clientes_mensal" width="250" height="250"> </canvas>
         </div>
+        <div class="col-md">
+            <br>
+
+            <h1>Sabores mais pedidos:</h1>
+            <canvas id="pizzas_vendidas" width="250" height="250"> </canvas>
+        </div>
+        
         
       
 
@@ -127,6 +134,8 @@
     renderiza_vendas_mensal('{% url "dashboard:relatorio_vendas" %}')
     renderiza_produtos_mais_vendidos('{% url "dashboard:relatorio_produtos" %}')
     renderiza_clientes_mensal('{% url "dashboard:relatorio_clientes" %}')
+    renderiza_pizza('{% url "dashboard:relatorio_pizza" %}')
+
 
 
 }

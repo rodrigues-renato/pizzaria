@@ -5,6 +5,7 @@ from pedidos.models import ItemPedido
 from menu.models import Produto
 from datetime import datetime
 from django.db.models import Count,Sum
+from collections import Counter
 
 
 def graph(request):
@@ -129,3 +130,26 @@ def relatorio_clientes(request):
 
 
 
+
+def relatorio_pizza(request):
+    mes_atual = datetime.now().month
+    ano_atual = datetime.now().year
+    print("to aquiiiiiiiiiiiiiiiiiiiii")
+    # Filtra todos os itens do mês atual (sem usar Strftime)
+    itens = ItemPedido.objects.select_related('produto').filter(produto__categoria='Pizza')
+
+    # Filtra manualmente usando Python
+    itens_filtrados = [item for item in itens if item.data.month == mes_atual and item.data.year == ano_atual]
+
+    # Conta os produtos
+    contador = Counter()
+    for item in itens_filtrados:
+        contador[item.produto.nome] += 1
+    print("to aquiiiiiiiiiiiiiiiiiiiii")
+    # Pega os 5 mais vendidos
+    mais_vendidos = contador.most_common(5)
+    labels = [nome for nome, _ in mais_vendidos]
+    data = [quantidade for _, quantidade in mais_vendidos]
+    print(labels,data)
+    return JsonResponse({'labels': labels, 'data': data})
+    #return JsonResponse({'labels': x[0][:], 'data': x[1][:]})
