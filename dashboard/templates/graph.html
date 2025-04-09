@@ -28,7 +28,15 @@
     </style>
 {% endblock bg %}
 {% block body %}
-<div class="container" >
+<div class="d-flex">
+    <button id="exportarPDF" class="btn btn-secondary btn-lg">
+    <i class="fas fa-file-pdf"></i>
+    Exportar para PDF
+    </button>
+</div>
+
+
+<div class="container" id="all-graphs">
     <br>
     {% comment %} <div class="row">
 
@@ -107,6 +115,9 @@
   </footer>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'dashboard/js/graph.js' %}"></script>
+<script src="{% static 'dashboard/js/exportpdf.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 
 <script>
