@@ -5,7 +5,7 @@ function gera_cor(qtd=1){
         let r = Math.random() * 255;
         let g = Math.random() * 255;
         let b = Math.random() * 255;
-        bg_color.push(`rgba(${r}, ${g}, ${b}, ${0.2})`)
+        bg_color.push(`rgba(${r}, ${g}, ${b}, ${0.4})`)
         border_color.push(`rgba(${r}, ${g}, ${b}, ${1})`)
         
     }
@@ -127,6 +127,38 @@ function renderiza_produtos_mais_vendidos(url){
         
         const ctx = document.getElementById('produtos_mais_vendidos').getContext('2d');
         var cores_produtos_mais_vendidos = [[`rgba(${55}, ${55}, ${55}, ${0.2})`,`rgba(${133}, ${111}, ${255}, ${0.2})`,,(131,111,255)], (131,111,255),(131,111,255),(131,111,255),(131,111,255)]
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Quantidade',
+                    data: data.data,
+                    backgroundColor: cores_produtos_mais_vendidos[0],
+                    borderColor: cores_produtos_mais_vendidos[1],
+                    borderWidth: 1
+                }]
+            },
+            
+        });
+
+
+    })
+  
+}
+
+
+
+function renderiza_pizza(url){
+
+    fetch(url, {
+        method: 'get',
+    }).then(function(result){
+        return result.json()
+    }).then(function(data){
+        
+        const ctx = document.getElementById('pizzas_vendidas').getContext('2d');
+        var cores_produtos_mais_vendidos = gera_cor(qtd=12)
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
