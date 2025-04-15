@@ -1,6 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import render
 from pedidos.models import ItemPedido
 from menu.models import Produto
 from datetime import datetime
@@ -9,6 +8,8 @@ from collections import Counter
 
 
 def graph(request):
+    if not request.user.is_superuser:
+        return redirect(request.META.get('HTTP_REFERER', '/'))
     return render(request, 'graph.html')
 
 
